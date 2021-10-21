@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head></head>
+  <body>
+    <header class="bg-dark text-white" id="header"></header>
+    <nav id="mainNav" class="bg-light border-left shadow-lg closed"></nav>
+    <main class="container-fluid">
+      <form name="filtriHome" class="form-inline">
+        <div class="row d-lg-none d-sm-block mb-3">
+          <div class="col">
+            <button type="button" name="viewFilter" class="btn btn-sm btn-secondary form-control" data-bs-toggle="collapse" data-bs-target="#filtri">filtra</button>
+          </div>
+        </div>
+        <div class="row mb-3 collapse" id="filtri">
+          <div class="col-lg-3 mb-1">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Anno</span>
+              </div>
+              <input type="text" list="anno" name="filter" data-filtro='anno' class="form-control filter" placeholder="cerca per anno" autocomplete="off">
+              <datalist id="anno"></datalist>
+            </div>
+          </div>
+          <div class="col-lg-3 mb-1">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Comune</span>
+              </div>
+              <input type="text" list="comuni" name="filter" data-filtro='comune' class="form-control filter" placeholder="cerca per Comune" autocomplete="off">
+              <datalist id="comuni"></datalist>
+            </div>
+          </div>
+          <div class="col-lg-3 mb-1">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">nome</span>
+              </div>
+              <input type="text" list="scavi" name="filter" data-filtro='nome_lungo' class="form-control filter" placeholder="cerca per nome" autocomplete="off">
+              <datalist id="scavi"></datalist>
+            </div>
+          </div>
+          <div class="col-lg-2 mb-1">
+            <div class="input-group input-group-sm">
+              <div class="input-group-prepend">
+                <span class="input-group-text">sigla</span>
+              </div>
+              <input type="text" list="sigle" name="filter" data-filtro='sigla' class="form-control filter" placeholder="cerca per sigla" autocomplete="off">
+              <datalist id="sigle"></datalist>
+            </div>
+          </div>
+          <div class="col-lg-1">
+            <button type="button" class="btn btn-secondary form-control" name="clearFilter" data-toggle="tooltip" title="pulisci filtri"><i class="fas fa-trash-alt"></i></button>
+          </div>
+        </div>
+      </form>
+      <hr>
+      <div class="card-list card-columns mt-2"></div>
+    </main>
+    <script src="src/init.js" charset="utf-8"></script>
+  </body>
+</html>
