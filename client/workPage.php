@@ -80,6 +80,10 @@
             </div>
             <ul class="list-group list-group-flush list-info">
               <li class="list-group-item">
+                <span class="list-key">Id scavo</span>
+                <span class="list-value" id="id"><?php echo $_POST['id']; ?></span>
+              </li>
+              <li class="list-group-item">
                 <span class="list-key">Comune</span>
                 <span class="list-value" id="comune"></span>
               </li>

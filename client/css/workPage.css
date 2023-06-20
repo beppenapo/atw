@@ -19,3 +19,9 @@
   background: rgba(0,0,0,.2);
 }
 #findPie{width: 300px; height:300px;}
+
+.repConsegnato:not(:disabled):not(.disabled).active, .repConsegnato:not(:disabled):not(.disabled):active, .show>.repConsegnato.dropdown-toggle {
+    color: #dc3545;
+    background-color: transparent;
+    border-color: transparent;
+}

@@ -16,4 +16,5 @@ function usList($obj){return json_encode($obj->usList());}
 function addReperto($obj){return json_encode($obj->addReperto($_POST['dati']));}
 function repertiPie($lavoro){return json_encode($lavoro->repertiPie($_POST['dati']['id']));}
 function getSacchetti($lavoro){return json_encode($lavoro->getSacchetti($_POST['dati']['id']));}
+function setConsegnato($lavoro){return json_encode($lavoro->setConsegnato($_POST['dati']));}
 ?>

@@ -266,7 +266,30 @@ function initReperti(){
       let item = $("<div/>",{class:'py-2 px-3 border-bottom'}).appendTo('.list-reperti');
       $("<small/>",{class:'font-weight-bold d-block', text:"reperto num. "+val.numero+" in US"+val.us+" (inv."+val.inventario+")"}).appendTo(item);
       $("<small/>",{class:'d-block', text:val.tipologia+","+val.materiale}).appendTo(item);
+      if(val.reperto){ $("<small/>",{class:'d-block mt-2', text:"Descrizione: "+val.reperto}).appendTo(item);}
       $("<small/>",{class:'d-block', text:val.note}).appendTo(item);
+
+      let repertoNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(item);
+
+      // let repertoView = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'repertoView'}).appendTo(repertoNavDiv);
+      // $("<i/>", {class:'fas fa-eye'}).appendTo(repertoView);
+      //
+      // let repertoEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'repertoView'}).appendTo(repertoNavDiv);
+      // $("<i/>", {class:'fas fa-edit'}).appendTo(repertoEdit);
+
+      let consActive = '';
+      if (val.consegnato == true) {consActive = 'active';}
+      let repertoConsegnato = $('<div/>',{class:'btn-group-toggle'}).attr("data-toggle","buttons").appendTo(repertoNavDiv);
+      let repConsLabel = $("<label/>", {class:'btn btn-sm btn-light repConsegnato '+ consActive}).appendTo(repertoConsegnato);
+      let repConsCheck = $("<input/>", {type:'checkbox'}).prop("checked", val.consegnato).appendTo(repConsLabel);
+      $("<i/>",{class:'fas fa-handshake'}).appendTo(repConsLabel);
+      repConsCheck.on('click', function(){
+        let consegnato = $(this).is(':checked')
+        postData("sacchetti.php", {dati:{trigger:'setConsegnato',scavo:work, reperto: val.id, stato:consegnato}}, function(data){
+          let checkStato = consegnato == false ? 'non consegnato': 'consegnato';
+          alert('Il reperto è stato contrassegnato come ' + checkStato)
+        })
+      })
     });
     $.each(data.campioni, function(index, val) {
       let item = $("<div/>",{class:'py-2 px-3 border-bottom'}).appendTo('.list-campioni');

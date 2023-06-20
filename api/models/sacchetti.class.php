@@ -81,9 +81,16 @@ class Sacchetto extends Db{
     $out['sacchetti'] = $this->getGenerici($id);
     return $out;
   }
+
+  public function setConsegnato(array $rep){
+    $sql="update sacchetto set consegnato = ".$rep['stato']." where scavo = ".$rep['scavo']." and id = ".$rep['reperto'].";";
+    return $this->simple($sql);
+  }
+
+
   private function getReperti(int $id = null){
     $filter = $id !== null ? "WHERE s.scavo = ".$id : "";
-    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione reperto, m.value materiale, t.value tipologia
+    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione reperto,s.consegnato, m.value materiale, t.value tipologia
     FROM sacchetto s
     JOIN reperto r ON r.sacchetto = s.id
     JOIN list.materiale m ON r.materiale = m.id
