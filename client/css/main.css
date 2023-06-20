@@ -24,7 +24,7 @@ body>nav.closed a>span{opacity: 0;}
 body>nav>.mainNav>a.active{ background: #962c36; color:#fff; cursor: default; pointer-events: none; border:none; }
 body>nav>.mainNav{position: absolute; top: 0; right: 0; width: 100%; bottom: 50px; overflow: auto;}
 body>nav>.logoutSec{ position:absolute; bottom:0; left:0; width:100%;}
-main{ position: relative; width: 100vw; min-height: calc(100% - 60px); margin:60px 0 0 0; z-index:1;}
+main{ position: relative; width: 100vw; min-height: calc(100% - 60px); margin:0; z-index:1;}
 
 /* .bgModalToast{position: fixed;top: 0;left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,.3); z-index: 10; overflow: hidden;} */
 .toast{position: fixed; top:60px; left:0; right:0; margin-left: auto; margin-right: auto; z-index: 11;}
@@ -36,11 +36,9 @@ main{ position: relative; width: 100vw; min-height: calc(100% - 60px); margin:60
 
 @media (max-width: 575px) {
   .toast{width: 80vw;}
-  [name='filtriHome'] span.input-group-text{width:100px;}
 }
 @media (min-width: 576px) and (max-width: 767px) {
   .toast{width: 80vw;}
-  [name='filtriHome'] span.input-group-text{width:100px;}
 }
 @media (min-width: 768px) and (max-width: 991px) {
   .toast{width: 60vw;}
