@@ -10,11 +10,11 @@ require_once("inc/session.php");
   <body>
     <?php require_once("inc/header.html"); ?>
     <?php require_once("inc/nav.html"); ?>
-    <div class="navbar navbar-expand-lg navbar-dark bg-dark mt-5">
+    <div class="navbar navbar-expand-lg navbar-light bg-light mt-5">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="navbar-collapse justify-content-center" id="navbarSupportedContent">
+      <div class="collapse show navbar-collapse justify-content-center" id="navbarSupportedContent">
         <form class="form-inline">
           <div class="dropdown my-2">
             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuAnno" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">filtra anno</button>
