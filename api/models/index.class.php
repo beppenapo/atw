@@ -5,7 +5,7 @@ class Index extends Db{
 
   function __construct(){}
   public function getFilterLavoro(){
-    $sql = "select distinct extract('Y' from inizio) as anno from scavo;";
+    $sql = "select distinct extract('Y' from inizio) as anno from scavo order by 1 desc;";
     $anno = $this->simple($sql);
     $sql = "select distinct osm.osm_id, osm.name from osm join localizzazione l on l.comune = osm.osm_id order by 2 asc;";
     $comune = $this->simple($sql);

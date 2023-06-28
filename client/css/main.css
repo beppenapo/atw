@@ -40,6 +40,14 @@ main{ position: relative; width: 100vw; min-height: calc(100% - 60px); margin:0;
   font-weight: bold;
 }
 .dtr-data{display: inline-block; width: auto; max-width: 70%; vertical-align: top;}
+
+.dropdown-menu.show {
+  display: block;
+  max-height: 350px;
+  overflow: auto;
+}
+
+
 @media (max-width: 575px) {
   .toast{width: 80vw;}
 }
