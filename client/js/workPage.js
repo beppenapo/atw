@@ -1,7 +1,12 @@
 const work = $('[name=work]').val();
 let name = $('[name=name]').val();
 let lon,lat, totOre, percOre, ore = 0, color;
-//NOTE: sezione dati generali scavo
+
+$("[name=modInfoWork]").on('click', (el) =>{
+  $.redirectPost('modInfoWork.php',{id:work});
+})
+
+
 postData("lavoro.php", {dati:{trigger:'getWork',id:work}}, function(data){
   totOre = data[0].tot_ore;
   $('[name=name]').val(data[0].nome);
@@ -14,9 +19,9 @@ postData("lavoro.php", {dati:{trigger:'getWork',id:work}}, function(data){
   $("#descrizione").text(data[0].descrizione);
   $("#ore").text(data[0].tot_ore);
   $("#direttore").text(data[0].direttore);
-  if (data[0].fine && data[0].fine !== null) {
+  if (data[0].chiuso_il && data[0].chiuso_il !== null) {
     $(".statoLavoroItem").addClass('bg-danger text-white');
-    $("#statoLavoro").text("lavoro chiuso in data: "+data[0].fine);
+    $("#statoLavoro").text("lavoro chiuso in data: "+data[0].chiuso_il);
   }else {
     $(".statoLavoroItem").addClass('bg-success text-white');
     $("#statoLavoro").text("work in progress!");
@@ -34,6 +39,7 @@ postData("lavoro.php", {dati:{trigger:'getWork',id:work}}, function(data){
     if(typeof $(this).data('tipo') !== 'undefined') {opt.tipo = $(this).data('tipo'); }
     $.redirectPost(page,opt);
   })
+  $("[name=modWork]").on('click', (el) => { $.redirectPost('modWork.php',{id:work}); })
   initMap(lon, lat)
   initSectionOre(totOre)
   initDiario(data[0].nome)

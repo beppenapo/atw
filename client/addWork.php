@@ -22,11 +22,11 @@
         </div>
         <div class="form-row">
           <div class="form-group col-md-6">
-            <label for="nome" class="text-danger"><i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="Nome esteso, es. 'Cles, campi neri'"></i> Nome</label>
+            <label for="nome" class="text-danger"><i class="fas fa-info-circle" data-toggle="tooltip" data-placement="auto" title="Nome esteso, es. 'Cles, campi neri'"></i> Nome</label>
             <input type="text" class="form-control" id="nome" name="nome" value="" placeholder="nome identificativo" required>
           </div>
           <div class="form-group col-md-2">
-            <label for="sigla" class="text-danger"><i class="fas fa-info-circle" data-toggle="tooltip" data-placement="top" title="inserisci la sigla di scavo così come compare sulla lavagnetta e su tutta la documentazione"></i> Sigla scavo</label>
+            <label for="sigla" class="text-danger"><i class="fas fa-info-circle" data-toggle="tooltip" data-placement="auto" title="inserisci la sigla di scavo così come compare sulla lavagnetta e su tutta la documentazione"></i> Sigla scavo</label>
             <input type="text" class="form-control" id="sigla" name="sigla" value="" placeholder="sigla scavo" required>
           </div>
           <div class="col-md-4">
@@ -45,7 +45,7 @@
 
         <div class="form-row mb-3">
           <div class="col">
-            <button type="button" class="btn btn-info w-100" data-toggle="collapse" data-target="#campi-secondari" aria-pressed="false" autocomplete="off"><span class="collapseBtn">nascondi</span> campi non obbligatori</button>
+            <button type="button" class="btn btn-info w-100" data-toggle="collapse" data-target="#campi-secondari" aria-pressed="false" autocomplete="off"><span class="collapseBtn">visualizza</span> campi non obbligatori</button>
           </div>
         </div>
         <div class="collapse mb-3" id="campi-secondari">

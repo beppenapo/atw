@@ -18,22 +18,6 @@ $('[name=submit]').on('click', function (e) {
     dati.note = $("#note").val();
     dati.trigger="addRubrica";
     console.log(dati);
-    postData("utenti.php", {dati}, function(data){
-      if (data === true) {
-        $(".toast").removeClass('[class^="bg-"]').addClass('bg-success');
-        $(".toast>.toast-body").text('contatto inserito correttamente');
-        $(".toast").toast({delay:3000});
-        $(".toast").toast('show');
-        setTimeout(function(){
-          $.redirectPost('rubrica.php');
-        },3000);
-      }else {
-        $(".toast").removeClass('[class^="bg-"]').addClass('bg-danger');
-        $("#headerTxt").html('Errore nella query');
-        $(".toast>.toast-body").html(data);
-        $(".toast").toast({delay:3000});
-        $(".toast").toast('show');
-      }
-    })
+    postData("utenti.php", {dati}, function(data){buildToast(data, 'rubrica.php')});
   }
 })

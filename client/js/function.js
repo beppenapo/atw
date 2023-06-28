@@ -26,24 +26,6 @@ if (!Object.entries) {
   };
 }
 
-function getScavo(){
-
-}
-function getUser(){
-
-}
-
-function getConfig() {
-    var res = $.ajax({
-      url: API+'sacchetti.php',
-      type: 'POST',
-      dataType: 'json',
-      data: {dati:{trigger:'scavoConfig', scavo:scavo}},
-      async: false
-    });
-    return res.responseJSON;
-}
-
 $(document).ready(function(){
   $("body").tooltip(toolTipOpt);
 
@@ -74,6 +56,33 @@ $(document).ready(function(){
   });
   activeLink();
 });
+
+function buildToast(data, redirect, opt){
+  if (data === true) {
+    $(".toast").removeClass('[class^="bg-"]').addClass('bg-success');
+    $(".toast>.toast-body").text('azione eseguita correttamente');
+    $(".toast").toast({delay:3000});
+    $(".toast").toast('show');
+    setTimeout(function(){$.redirectPost(redirect,opt);},3000);
+  }else {
+    $(".toast").removeClass('[class^="bg-"]').addClass('bg-danger');
+    $("#headerTxt").html('Errore nella query');
+    $(".toast>.toast-body").html(data);
+    $(".toast").toast({delay:3000});
+    $(".toast").toast('show');
+  }
+}
+
+function getConfig() {
+  var res = $.ajax({
+    url: API+'sacchetti.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {dati:{trigger:'scavoConfig', scavo:scavo}},
+    async: false
+  });
+  return res.responseJSON;
+}
 function buildRapportiForm(div,group){
   var grp = '';
   let grpCol= 12 / group.length;
@@ -322,7 +331,7 @@ function buildList(data, sel){
 function classRubricaSelect(){
   postData("liste.php", {tab:'list.soggetto_rubrica', orderBy:'id asc'}, function(data){
     $.each(data, function(i,v){
-      $("<option/>", {value:v.id, text:v.classe}).appendTo("select#classe");
+      $("<option/>", {value:v.id, text:v.value}).appendTo("select#classe");
     })
   })
 }

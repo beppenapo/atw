@@ -21,4 +21,6 @@ function addDiario($lavoro){return json_encode($lavoro->addDiario($_POST['dati']
 function updateDiario($lavoro){return json_encode($lavoro->updateDiario($_POST['dati']));}
 function addFotopiano($lavoro){return json_encode($lavoro->addFotopiano($_POST['dati']));}
 
+function modInfoWork($lavoro){return json_encode($lavoro->modInfoWork($_POST['dati']));}
+
 ?>

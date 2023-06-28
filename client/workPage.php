@@ -21,20 +21,11 @@
     <div class="">
       <nav id="workPageTool" class="p-2 mb-3 bg-dark text-white">
         <div class="btn-group btn-group-sm">
-          <button type="button" class="btn btn-dark text-white dropdown-toggle toggle-scavo" data-toggle="dropdown">scavo</button>
+          <button type="button" class="btn btn-dark text-white dropdown-toggle toggle-scavo" data-toggle="dropdown">modifica</button>
           <div class="dropdown-menu">
-            <button class="dropdown-item" type="button" data-form="modScavo">
-              <i class="fas fa-edit"></i>
-              modifica dati
-            </button>
-            <button class="dropdown-item text-success" type="button" data-form="chiudiScavo">
-              <i class="fas fa-check"></i>
-              chiudi scavo
-            </button>
-            <button class="dropdown-item text-danger" type="button" data-form="delScavo">
-              <i class="fas fa-exclamation-triangle"></i>
-              elimina scavo
-            </button>
+            <button class="dropdown-item" type="button" name="modInfoWork">dati generali</button>
+            <button class="dropdown-item disabled" type="button" name="modLocWork">localizzazione</button>
+            <button class="dropdown-item disabled" type="button" name="modListWork">numeri elenchi</button>
           </div>
         </div>
         <div class="btn-group btn-group-sm">
@@ -45,7 +36,6 @@
           <div class="dropdown-menu dropdown-inserisci">
             <button class="dropdown-item" type="button" data-form="addUs" data-tipo="1">US positiva</button>
             <button class="dropdown-item" type="button" data-form="addUs" data-tipo="2">US negativa</button>
-            <!-- <button class="dropdown-item" type="button" data-form="addUs" data-tipo="3">US tafonomica</button> -->
           </div>
         </div>
         <div class="btn-group btn-group-sm">
@@ -76,9 +66,12 @@
         <div class="card-columns px-3">
           <div class="card mb-3" id="infoGenerali">
             <div class="card-header bg-primary text-white">
-              <h4>info generali</h4>
+              <h4>Scheda scavo</h4>
             </div>
             <ul class="list-group list-group-flush list-info">
+              <li class="list-group-item statoLavoroItem">
+                <span id="statoLavoro"></span>
+              </li>
               <li class="list-group-item">
                 <span class="list-key">Id scavo</span>
                 <span class="list-value" id="id"><?php echo $_POST['id']; ?></span>
@@ -104,6 +97,10 @@
                 <span class="list-value" id="inizio"></span>
               </li>
               <li class="list-group-item">
+                <span class="list-key">Fine lavori</span>
+                <span class="list-value" id="fine"></span>
+              </li>
+              <li class="list-group-item">
                 <span class="list-key">Descrizione</span>
                 <span class="list-value" id="descrizione"></span>
               </li>
@@ -115,8 +112,8 @@
                 <span class="list-key">Direttore scavo</span>
                 <span class="list-value" id="direttore"></span>
               </li>
-              <li class="list-group-item statoLavoroItem">
-                <span id="statoLavoro"></span>
+              <li class="list-group-item">
+                <button type="button" name="button" class="btn btn-danger form-control">elimina scavo</button>
               </li>
             </ul>
           </div>

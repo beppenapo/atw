@@ -5,7 +5,7 @@ class Lavoro extends Db{
   function __construct(){}
 
   public function getWork(int $id){
-    $sql = "select s.id, s.nome_lungo as nome, s.sigla, inizio, s.fine, s.ore_stimate as tot_ore, s.descrizione, c.name as comune, l.localizzazione, l.lon, l.lat, r.nome as direttore from scavo s inner join rubrica r on s.direttore = r.id left join localizzazione l on l.scavo = s.id left join osm c on l.comune = c.osm_id where s.id = ".$id.";";
+    $sql = "select s.id, s.nome_lungo as nome, s.sigla, inizio, s.fine, s.chiuso_il, s.ore_stimate as tot_ore, s.descrizione, c.name as comune, l.localizzazione, l.lon, l.lat, r.id as id_direttore, r.nome as direttore from scavo s inner join rubrica r on s.direttore = r.id left join localizzazione l on l.scavo = s.id left join osm c on l.comune = c.osm_id where s.id = ".$id.";";
     return $this->simple($sql);
   }
 
@@ -101,7 +101,12 @@ class Lavoro extends Db{
     }
   }
 
-  public function updateWork(int $id){}
+  public function modInfoWork(array $dati){
+    $filter = array("id" => $dati['id']);
+    $sql = $this->buildUpdate('scavo',$filter, $dati);
+    $exec = $this->prepared($sql,$dati);
+    return $exec;
+  }
   public function deleteWork(int $id){}
 
   public function addOre($dati=array()){

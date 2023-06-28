@@ -8,7 +8,8 @@ if(isset($funzione) && function_exists($funzione)) {
   echo $trigger;
 }
 function getClassRubrica($obj){return json_encode($obj->getClassRubrica());}
-function getRubrica($obj){return json_encode($obj->getRubrica());}
+function getRubrica($obj){return json_encode($obj->getRubrica($_POST['dati']['id']));}
 function addRubrica($obj){return json_encode($obj->addRubrica($_POST['dati']));}
+function modContatto($obj){return json_encode($obj->modContatto($_POST['dati']));}
 
 ?>
