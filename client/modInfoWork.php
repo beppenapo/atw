@@ -62,6 +62,7 @@
         <div class="form-row">
           <div class="form-group col">
             <button type="submit" class="btn btn-primary" name="submitInfoWork">salva dati</button>
+            <button type="button" class="btn btn-secondary" name="cancelInfoWork">annulla</button>
           </div>
         </div>
       </form>

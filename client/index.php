@@ -6,6 +6,7 @@ require_once("inc/session.php");
   <head>
     <?php require_once("inc/meta.html"); ?>
     <?php require_once("inc/css.html"); ?>
+    <link rel="stylesheet" href="css/index.css">
   </head>
   <body>
     <?php require_once("inc/header.html"); ?>
@@ -50,11 +51,7 @@ require_once("inc/session.php");
       </div>
     </div>
     <main class="container-fluid">
-      <div class="row">
-        <div class="col">
-        </div>
-      </div>
-      <div class="card-list card-columns mt-2"></div>
+      <div class="card-list mt-2"></div>
     </main>
     <?php require_once("inc/lib.html"); ?>
     <script src="js/index.js" charset="utf-8"></script>

@@ -8,6 +8,9 @@ if(isset($funzione) && function_exists($funzione)) {
 }
 
 function getFilterLavoro($obj){return json_encode($obj->getFilterLavoro());}
-function getLavoro($obj){ return json_encode($obj->getLavoro($_POST['dati']['filtri']));}
+function getLavoro($obj){
+  // $filtri = isset($_POST['dati']['filtri']) ? $_POST['dati']['filtri'] : array();
+  return json_encode($obj->getLavoro($_POST['dati']['filtri']));
+}
 
 ?>

@@ -48,20 +48,23 @@ function schedeScavi(filtri){
   dati={};
   dati.trigger = 'getLavoro';
   if(filtri){dati.filtri = filtri;}
-  $(".card-columns").html('');
+  $(".card-list").html('');
+  console.log(dati);
   postData("index.php", {dati}, function(data){
+    console.log(data);
     $.each(data, function(i,v){
       let card = $("<div/>").addClass('card')
         .attr("data-anno", v.anno)
         .attr("data-osm_id", v.osm_id)
         .attr("data-nome_lungo", v.nome)
         .attr("data-sigla", v.sigla)
-        .appendTo('.card-columns')
+        .appendTo('.card-list')
         .hide()
         .fadeIn('fast');
       let body = $("<div/>").addClass('card-body').appendTo(card);
       let title = $("<h5/>",{text:v.nome}).addClass('card-title border-bottom').appendTo(body);
-      let subTitle = $("<h6/>", {html:"<span>"+v.comune+", "+v.sigla+ ", "+v.anno+"</span>"}).addClass('card-subtitle text-muted mb-2').appendTo(body);
+      let subTitle = $("<h6/>", {html:"<span>"+v.comune+", "+v.sigla+ ", "+v.anno+"</span>"}).addClass('card-subtitle text-muted').appendTo(body);
+      $("<small/>",{class:'text-muted d-block mb-2'}).text('Ultimo giorno di cantiere: '+v.last).appendTo(body);
       let text = $("<p/>",{text:v.descrizione}).addClass('card-text').appendTo(body);
       let footer = $("<div/>").addClass('card-footer text-right').appendTo(card);
       $("<button/>",{type: 'button', name:'link2work', value:v.id, class:'btn btn-sm btn-outline-info', text:'apri scavo'}).appendTo(footer).on('click', function(){
