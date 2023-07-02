@@ -33,24 +33,22 @@ class Sacchetto extends Db{
     $n = $this->numeroLiberoSacchetto();
     $dati['sacchetto']['inventario'] = $n['inventario'];
     $dati['sacchetto']['numero'] = $n['numero'];
-    try {
+    // try {
       $this->begin();
       $sacchettoId = $this->nuovoSacchetto($dati['sacchetto']);
-      if ($dati['reperto']) {
+      if (isset($dati['reperto'])) {
         $dati['reperto']['sacchetto'] = $sacchettoId['field'][0];
-        $this->nuovoReperto($dati['reperto']);
+        $sql = "insert into reperto(sacchetto, materia, tipo) values (:sacchetto, :materia, :tipo)";
+        $reperto = $this->prepared($sql,$dati['reperto']);
       }
-      if ($dati['campione']) {
+      if (isset($dati['campione'])) {
         $dati['campione']['sacchetto'] = $sacchettoId['field'][0];
-        $this->nuovoCampione($dati['campione']);
+        $sql = "insert into reperto(sacchetto, materia, tipo) values (:sacchetto, :materia, :tipo)";
+        $campione = $this->prepared($sql,$dati['campione']);
+        // $out = $this->nuovoCampione($dati['campione']);
       }
       $this->commitTransaction();
       return array('res'=>true, 'inventario'=>$n['inventario'], 'numero'=>$n['numero']);
-    } catch (\Exception $e) {
-      $this->pdo->rollback();
-      return $e->getMessage();
-    }
-
   }
 
   public function updateSacchetto(int $id){}
@@ -61,7 +59,8 @@ class Sacchetto extends Db{
     return $this->returning($sql,$dati);
   }
   private function nuovoReperto($dati = array()){
-    $sql = "insert into reperto(sacchetto, materiale, tipologia) values (:sacchetto, :materiale, :tipologia)";
+    // $sql = "insert into reperto(sacchetto, materiale, tipologia) values (:sacchetto, :materiale, :tipologia)";
+    $sql = "insert into reperto(sacchetto, materia, tipo) values (:sacchetto, :materia, :tipo)";
     return $this->prepared($sql,$dati);
   }
   private function nuovoCampione($dati = array()){

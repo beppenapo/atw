@@ -349,11 +349,11 @@ function getRapporti(tipo, callback){
   var group;
   var option={tab:'list.rapporti_us'}
   switch (parseInt(tipo)) {
-    case 1: option.filter = {'us_pos':true}; break;
-    case 2: option.filter = {'us_neg':true}; break;
-    case 3: option.filter = {'us_tafo':true}; break;
-    case 4: option.filter = {'us_muro':true}; break;
-    case 5: option.filter = {'us_geo':true}; break;
+    case 1: option.filter = ["us_pos=true"]; break;
+    case 2: option.filter = ["us_neg=true"]; break;
+    case 3: option.filter = ["us_tafo=true"]; break;
+    case 4: option.filter = ["us_muro=true"]; break;
+    case 5: option.filter = ["us_geo=true"]; break;
   }
   postData("liste.php", option, function(data){
     const groupByGruppo = groupBy(['gruppo']);
@@ -364,7 +364,7 @@ function getRapporti(tipo, callback){
 function direttoreSelect(){
   option={
     tab:'rubrica',
-    filter:{classe:1},
+    filter:["classe=1"],
     orderBy:'nome asc'
   }
   postData("liste.php", option, function(data){

@@ -27,43 +27,32 @@
       </div>
       <form class="form bg-white py-5 px-3 border rounded shadow" id="formReperto">
         <div class="form-row">
-          <div class="col border-bottom mb-3">
-            <h4 class="d-block m-0">Registra un nuovo <span class="pageObject"></span> </h4>
+          <div class="col border-bottom mb-3 text-center">
+            <h2><?php echo $_POST['name']; ?></h2>
+            <h4 class="d-block m-0">Registra un nuovo <span class="pageObject"></span></h4>
             <small class="text-danger">i campi in rosso sono obbligatori</small>
           </div>
         </div>
         <div class="form-row mb-3">
-          <div class="col-md-5">
-            <label for="scavo" class="text-danger">Scavo</label>
-            <select class="form-control" id="scavo" name="scavo" required>
-              <option value="" selected disabled>--select from list--</option>
-            </select>
+          <div class="col-md-2">
+            <label for="data" class="text-danger">Data</label>
+            <input type="date" id="data" class="form-control" name="data" min="2005-01-01" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" value="<?php echo date('Y-m-d'); ?>" required>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <label for="us" class="text-danger">US</label>
-            <!-- <input list="usList" name="us" id="us" class="form-control">
-            <datalist id="usList"></datalist> -->
             <select class="form-control" id="us" name="us" required>
               <option value="" selected disabled>--select from list--</option>
             </select>
           </div>
-          <div class="col-md-4">
-            <label for="data" class="text-danger">Data</label>
-            <input type="date" id="data" class="form-control" name="data" min="2005-01-01" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" value="<?php echo date('Y-m-d'); ?>" required>
-          </div>
-        </div>
-        <div class="form-row mb-3">
-          <div class="col-md-6 rr cp">
+          <div class="col-md-3 rr cp">
             <label for="tipologia" class="text-danger">tipologia</label>
-            <select class="form-control" id="tipologia" name="tipologia" required>
-              <option value="" selected disabled>--select from list--</option>
-            </select>
+            <input type="text" class="form-control" id="tipologia" name="tipologia" list="listTipo" value="" placeholder="tipologia" required>
+            <datalist id="listTipo"></datalist>
           </div>
-          <div class="col-md-6 rr divMateriale">
+          <div class="col-md-3 rr divMateriale">
             <label for="materiale" class="text-danger">materiale</label>
-            <select class="form-control" id="materiale" name="materiale" required>
-              <option value="" selected disabled>--select from list--</option>
-            </select>
+            <input type="text" class="form-control" id="materiale" name="materiale" list="listMateriale" value="" placeholder="materiale" required>
+            <datalist id="listMateriale"></datalist>
           </div>
         </div>
         <div class="form-row mb-3">
@@ -75,9 +64,7 @@
         <div class="form-row mb-3">
           <div class="col">
             <label for="scavo" class="text-danger">Operatore</label>
-            <select class="form-control w-auto" id="compilatore" name="compilatore" required>
-              <option value="" selected disabled>--select from list--</option>
-            </select>
+            <select class="form-control w-auto" id="compilatore" name="compilatore" required></select>
           </div>
         </div>
         <div class="form-row">
