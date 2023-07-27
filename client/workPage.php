@@ -63,6 +63,7 @@
       </nav>
     </div>
     <main class="container-fluid">
+      <h1>puppa</h1>
         <div class="card-columns px-3">
           <div class="card mb-3" id="infoGenerali">
             <div class="card-header bg-primary text-white">
