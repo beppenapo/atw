@@ -3,6 +3,7 @@ const scavo = $("[name=postId]").val();
 const tipoRecord = $("[name=tipo]").val();
 const userAct = parseInt($("[name=usrAct]").val());
 let title, tipoId;
+let check_tipologia, check_materiale = false;
 
 $(".backBtn").on('click', function() { $.redirectPost('workPage.php', {id:postId});});
 
@@ -26,12 +27,12 @@ switch (tipoRecord) {
     $(".form-row > .rr").show();
     postData("liste.php", {tab:'tipo'}, function(data){
       data.forEach(function(v,i){
-        $("<option/>", {value:v.tipo}).appendTo('#listTipo');
+        $("<option/>", {value:v.tipologia}).appendTo('#listTipo');
       })
     })
     postData("liste.php", {tab:'materia'}, function(data){
       data.forEach(function(v,i){
-        $("<option/>", {value:v.materia}).appendTo('#listMateriale');
+        $("<option/>", {value:v.materiale}).appendTo('#listMateriale');
       })
     })
   break;
@@ -59,6 +60,14 @@ $('[name=submit]').on('click', function (e) {
   isvalidate = $(form)[0].checkValidity()
   if (isvalidate) {
     e.preventDefault()
+    if(!check_tipologia){
+      alert('devi confermare la scelta della tipologia cliccando sul pulsante accanto al campo');
+      return false;
+    }
+    if(!check_materiale){
+      alert('devi confermare la scelta del materiale cliccando sul pulsante accanto al campo');
+      return false;
+    }
     dati={};
     dati.scavo = scavo;
     dati.tipoId = tipoId;
@@ -99,3 +108,32 @@ $('[name=submit]').on('click', function (e) {
     })
   }
 })
+
+$("#confirm-tipologia").on('click', function(){toggleCheck('tipologia')})
+$("#confirm-materiale").on('click', function(){toggleCheck('materiale')})
+
+$("[name=tipologia]").on("keyup search", function(){toggleList('tipologia')})
+$("[name=materiale]").on("keyup search", function(){toggleList('materiale')})
+
+function toggleList(el){
+  el == 'tipologia' ? check_tipologia = false : check_materiale = false;
+  if($("[name="+el+"]").val().length == 0){
+    $("#confirm-"+el)
+      .removeClass('btn-success')
+      .addClass('btn-danger')
+      .prop('disabled', false)
+      .find('i')
+        .removeClass('fa-circle-check')
+        .addClass('fa-check')
+  }
+}
+
+function toggleCheck(el){
+  el == 'tipologia' ? check_tipologia = true : check_materiale = true;
+  let val = $("[name="+el+"]").val();
+  if(!val){
+    alert('devi selezionare un valore dalla lista o inserirne uno manualmente');
+    return false;
+  }
+  $("#confirm-"+el).toggleClass('btn-danger btn-success').prop('disabled', true).find('i').toggleClass('fa-check fa-circle-check');
+}

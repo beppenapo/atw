@@ -38,13 +38,13 @@ class Sacchetto extends Db{
       $sacchettoId = $this->nuovoSacchetto($dati['sacchetto']);
       if (isset($dati['reperto'])) {
         $dati['reperto']['sacchetto'] = $sacchettoId['field'][0];
-        $sql = "insert into reperto(sacchetto, materia, tipo) values (:sacchetto, :materia, :tipo)";
-        $reperto = $this->prepared($sql,$dati['reperto']);
+        $sql = "insert into reperto(sacchetto, materiale, tipologia) values (:sacchetto, :materia, :tipo)";
+        $this->prepared($sql,$dati['reperto']);
       }
       if (isset($dati['campione'])) {
         $dati['campione']['sacchetto'] = $sacchettoId['field'][0];
         $sql = "insert into reperto(sacchetto, materia, tipo) values (:sacchetto, :materia, :tipo)";
-        $campione = $this->prepared($sql,$dati['campione']);
+        $this->prepared($sql,$dati['campione']);
         // $out = $this->nuovoCampione($dati['campione']);
       }
       $this->commitTransaction();
@@ -89,11 +89,11 @@ class Sacchetto extends Db{
 
   private function getReperti(int $id = null){
     $filter = $id !== null ? "WHERE s.scavo = ".$id : "";
-    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione reperto,s.consegnato, m.value materiale, t.value tipologia
+    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione reperto,s.consegnato, r.materiale, r.tipologia
     FROM sacchetto s
     JOIN reperto r ON r.sacchetto = s.id
-    JOIN list.materiale m ON r.materiale = m.id
-    JOIN list.tipologia t ON r.tipologia = t.id
+    -- JOIN list.materiale m ON r.materiale = m.id
+    -- JOIN list.tipologia t ON r.tipologia = t.id
     JOIN us ON s.us = us.id
     ".$filter."
     ORDER BY s.numero DESC;";

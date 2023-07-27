@@ -13,10 +13,10 @@ $orderBy = isset($_POST['orderBy']) ? " order by ".$_POST['orderBy'] : '';
 
 switch ($_POST['tab']) {
   case 'tipo':
-    $sql = "select distinct tipo from reperto order by tipo asc;";
+    $sql = "select distinct tipologia from reperto order by tipologia asc;";
   break;
   case 'materia':
-    $sql = "select distinct materia from reperto order by materia asc;";
+    $sql = "select distinct materiale from reperto order by materiale asc;";
   break;
   default:
     $sql = "select * from ".$_POST['tab'].$filter.$orderBy.";";

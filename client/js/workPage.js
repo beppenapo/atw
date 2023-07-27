@@ -2,9 +2,7 @@ const work = $('[name=work]').val();
 let name = $('[name=name]').val();
 let lon,lat, totOre, percOre, ore = 0, color;
 
-$("[name=modInfoWork]").on('click', (el) =>{
-  $.redirectPost('modInfoWork.php',{id:work});
-})
+$("[name=modInfoWork]").on('click', (el) =>{ $.redirectPost('modInfoWork.php',{id:work}); })
 
 
 postData("lavoro.php", {dati:{trigger:'getWork',id:work}}, function(data){
