@@ -227,40 +227,6 @@ function initReperti(){
   let tipologia=[];
   let totale=[];
   let color = [];
-  screen.width < 575 ? $("#findPie").remove() : $("#findPie").show();
-  if(screen.width > 575){
-    const canvas = document.getElementById('findPie')
-    const ctx = canvas.getContext('2d');
-    for (var i = 0; i < 50; i++) { color.push(randomColor(0.5)); }
-    color = [ ...new Set(color) ];
-    postData("sacchetti.php", {dati:{trigger:'repertiPie', id:work}}, function(data){
-      if (data.length > 0) {
-        $.each(data, function(i,v){
-          tipologia.push(v.tipologia);
-          totale.push(v.tot);
-        })
-        var myChart = new Chart(ctx, {
-          type: 'polarArea',
-          data: {
-            labels: tipologia,
-            datasets: [{
-              data: totale,
-              backgroundColor: color,
-              borderColor: color,
-              borderWidth: 1
-            }]
-          },
-          options: {}
-        });
-        tipologia.forEach(function(el){ });
-      } else {
-        ctx.font = "20px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText("nessun reperto salvato", 150, 50);
-      }
-    })
-  }
-
   postData("sacchetti.php", {dati:{trigger:'getSacchetti',id:work}}, function(data){
     console.log(data);
     $("#totReperti").text(data.reperti.length);

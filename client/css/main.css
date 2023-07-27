@@ -62,6 +62,6 @@ main{ position: relative; width: 100vw; min-height: calc(100% - 60px); margin:0;
 }
 @media (min-width: 1200px) {
   body>nav.closed{transform: translate(140px,0);}
-  body>main.container-fluid{padding-right: 75px;}
+  body>main{padding-right: 75px !important;}
   .toast{width: 40vw;}
 }
