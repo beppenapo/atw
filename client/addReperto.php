@@ -44,7 +44,13 @@
               <option value="" selected disabled>--select from list--</option>
             </select>
           </div>
-          <div class="col-md-3 rr cp">
+          <div class="col-md-3 cp">
+            <label for="tipologia">Tipologia</label>
+            <select class="form-control" id="tipologia" name="tipologia">
+              <option value="" selecte required>--tipo campione--</option>
+            </select>
+          </div>
+          <div class="col-md-3 rr divTipologia">
             <label for="tipologia"><i class="fas fa-circle-info" data-toggle="tooltip" title="seleziona un valore dalla lista o inseriscine uno manualmente e conferma la scelta cliccando sul pulsante accanto"></i> tipologia</label>
             <div class="input-group">
               <input type="search" class="form-control" id="tipologia" name="tipologia" list="listTipo" value="" placeholder="tipologia" required>

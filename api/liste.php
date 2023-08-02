@@ -6,7 +6,6 @@ $sql='';
 if (isset($_POST['filter'])) {
   $arr = [];
   foreach ($_POST['filter'] as $key => $val) { $arr[]=$key."=".$val; }
-  // $filter = " where ". join(" and ", $arr);
   $filter = " where ". join(" and ", $_POST['filter']);
 }
 $orderBy = isset($_POST['orderBy']) ? " order by ".$_POST['orderBy'] : '';

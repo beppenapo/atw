@@ -24,6 +24,7 @@ switch (tipoRecord) {
   case 'rr':
     title = 'reperto';
     tipoId = 2;
+    $(".form-row > .cp").remove();
     $(".form-row > .rr").show();
     postData("liste.php", {tab:'tipo'}, function(data){
       data.forEach(function(v,i){
@@ -39,13 +40,18 @@ switch (tipoRecord) {
   case 'sg':
     title = 'sacchetto generico';
     tipoId = 3;
-    $(".form-row > .rr").remove();
+    $(".form-row > .rr, .form-row > .cp").remove();
   break;
   case 'cp':
     title = 'campione';
     tipoId = 1;
-    $(".form-row > .divMateriale").remove();
+    $(".form-row > .divMateriale, .form-row > .divTipologia").remove();
     $(".form-row > .cp").show();
+    postData("liste.php", {tab:'list.tipo_campione'}, function(data){
+      data.forEach(function(v,i){
+        $("<option/>").val(v.id).text(v.value).appendTo('#tipologia');
+      })
+    })
   break;
 }
 postData(model, {dati:{trigger:'numeroLiberoSacchetto',scavo:scavo, tipoId:tipoId}}, function(data){
@@ -60,11 +66,11 @@ $('[name=submit]').on('click', function (e) {
   isvalidate = $(form)[0].checkValidity()
   if (isvalidate) {
     e.preventDefault()
-    if(!check_tipologia){
+    if(tipoId == 2 && !check_tipologia){
       alert('devi confermare la scelta della tipologia cliccando sul pulsante accanto al campo');
       return false;
     }
-    if(!check_materiale){
+    if(tipoId == 2 && !check_materiale){
       alert('devi confermare la scelta del materiale cliccando sul pulsante accanto al campo');
       return false;
     }

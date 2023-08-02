@@ -43,7 +43,7 @@ class Sacchetto extends Db{
       }
       if (isset($dati['campione'])) {
         $dati['campione']['sacchetto'] = $sacchettoId['field'][0];
-        $sql = "insert into reperto(sacchetto, materia, tipo) values (:sacchetto, :materia, :tipo)";
+        $sql = "insert into campione(sacchetto, tipologia) values (:sacchetto, :tipologia)";
         $this->prepared($sql,$dati['campione']);
         // $out = $this->nuovoCampione($dati['campione']);
       }
@@ -92,8 +92,6 @@ class Sacchetto extends Db{
     $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione reperto,s.consegnato, r.materiale, r.tipologia
     FROM sacchetto s
     JOIN reperto r ON r.sacchetto = s.id
-    -- JOIN list.materiale m ON r.materiale = m.id
-    -- JOIN list.tipologia t ON r.tipologia = t.id
     JOIN us ON s.us = us.id
     ".$filter."
     ORDER BY s.numero DESC;";
