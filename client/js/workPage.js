@@ -244,8 +244,11 @@ function initReperti(){
       // let repertoView = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'repertoView'}).appendTo(repertoNavDiv);
       // $("<i/>", {class:'fas fa-eye'}).appendTo(repertoView);
       //
-      // let repertoEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'repertoView'}).appendTo(repertoNavDiv);
-      // $("<i/>", {class:'fas fa-edit'}).appendTo(repertoEdit);
+      let repertoEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'repertoEdit'}).appendTo(repertoNavDiv);
+      $("<i/>", {class:'fas fa-edit'}).appendTo(repertoEdit);
+      repertoEdit.on('click', function(){
+        $.redirectPost('editReperto.php',{scavo:work,sacchetto:val.id});
+      });
 
       let consActive = '';
       if (val.consegnato == true) {consActive = 'active';}

@@ -87,12 +87,12 @@ $('[name=submit]').on('click', function (e) {
     dati.sacchetto.descrizione = $("[name=descrizione]").val();
     if (tipoId==2) {
       dati.reperto={};
-      dati.reperto.materia = $("[name=materiale]").val();
-      dati.reperto.tipo = $("[name=tipologia]").val();
+      dati.reperto.materiale = $("[name=materiale]").val().trim().toLowerCase();
+      dati.reperto.tipologia = $("[name=tipologia]").val().trim().toLowerCase();
     }
     if (tipoId == 1) {
       dati.campione={};
-      dati.campione.tipologia = $("[name=tipologia]").val();
+      dati.campione.tipologia = $("[name=tipologia]").val().trim().toLowerCase();
     }
     postData(model, {dati}, function(data){
       console.log(data);

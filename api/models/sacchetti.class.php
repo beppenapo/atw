@@ -33,39 +33,38 @@ class Sacchetto extends Db{
     $n = $this->numeroLiberoSacchetto();
     $dati['sacchetto']['inventario'] = $n['inventario'];
     $dati['sacchetto']['numero'] = $n['numero'];
-    // try {
-      $this->begin();
-      $sacchettoId = $this->nuovoSacchetto($dati['sacchetto']);
-      if (isset($dati['reperto'])) {
-        $dati['reperto']['sacchetto'] = $sacchettoId['field'][0];
-        $sql = "insert into reperto(sacchetto, materiale, tipologia) values (:sacchetto, :materia, :tipo)";
-        $this->prepared($sql,$dati['reperto']);
-      }
-      if (isset($dati['campione'])) {
-        $dati['campione']['sacchetto'] = $sacchettoId['field'][0];
-        $sql = "insert into campione(sacchetto, tipologia) values (:sacchetto, :tipologia)";
-        $this->prepared($sql,$dati['campione']);
-        // $out = $this->nuovoCampione($dati['campione']);
-      }
-      $this->commitTransaction();
-      return array('res'=>true, 'inventario'=>$n['inventario'], 'numero'=>$n['numero']);
+    $this->begin();
+    $sacchettoId = $this->nuovoSacchetto($dati['sacchetto']);
+    if (isset($dati['reperto'])) {
+      $dati['reperto']['sacchetto'] = $sacchettoId['field'][0];
+      $sql = "insert into reperto(sacchetto, materiale, tipologia) values (:sacchetto, :materiale, :tipologia)";
+      $this->prepared($sql,$dati['reperto']);
+    }
+    if (isset($dati['campione'])) {
+      $dati['campione']['sacchetto'] = $sacchettoId['field'][0];
+      $sql = "insert into campione(sacchetto, tipologia) values (:sacchetto, :tipologia)";
+      $this->prepared($sql,$dati['campione']);
+    }
+    $this->commitTransaction();
+    return array('res'=>true, 'inventario'=>$n['inventario'], 'numero'=>$n['numero']);
   }
 
-  public function updateSacchetto(int $id){}
+  public function updateReperto(array $dati){
+    $repertoArr = array("sacchetto"=>$dati['sacchetto'], "tipologia"=>$dati['tipologia'], "materiale" => $dati['materiale']);
+    unset($dati['tipologia'], $dati['materiale']);
+    $updateSacchettoSql = "update sacchetto set data = :data, us = :us, descrizione = :descrizione, modificato_il = default, modificato_da = :modificato_da where id = :sacchetto;";
+    $updateRepertoSql = "update reperto set tipologia = :tipologia, materiale = :materiale where sacchetto = :sacchetto;";
+    $this->begin();
+    $this->prepared($updateSacchettoSql,$dati);
+    $this->prepared($updateRepertoSql,$repertoArr);
+    $this->commitTransaction();
+    return array('res'=>true);
+  }
   public function delSacchetto(int $id){}
 
   private function nuovoSacchetto($dati = array()){
     $sql = "insert into sacchetto(scavo, tipologia, data, compilatore, us, descrizione, inventario, numero) values (:scavo, :tipologia, :data, :compilatore, :us, :descrizione, :inventario, :numero) returning id;";
     return $this->returning($sql,$dati);
-  }
-  private function nuovoReperto($dati = array()){
-    // $sql = "insert into reperto(sacchetto, materiale, tipologia) values (:sacchetto, :materiale, :tipologia)";
-    $sql = "insert into reperto(sacchetto, materia, tipo) values (:sacchetto, :materia, :tipo)";
-    return $this->prepared($sql,$dati);
-  }
-  private function nuovoCampione($dati = array()){
-    $sql = "insert into campione(sacchetto, tipologia) values (:sacchetto, :tipologia)";
-    return $this->prepared($sql,$dati);
   }
 
   public function repertiPie(int $id = null){
@@ -84,6 +83,11 @@ class Sacchetto extends Db{
   public function setConsegnato(array $rep){
     $sql="update sacchetto set consegnato = ".$rep['stato']." where scavo = ".$rep['scavo']." and id = ".$rep['reperto'].";";
     return $this->simple($sql);
+  }
+
+  public function getReperto(int $sacchetto){
+    $sql = "select * from sacchetto, reperto where reperto.sacchetto = sacchetto.id and sacchetto.id = ".$sacchetto.";";
+    return $this->simple($sql)[0];
   }
 
 
