@@ -1,14 +1,9 @@
-select
-      s.id
-      , c.osm_id
-      , c.name comune
-      , s.nome_lungo nome
-      , s.sigla
-      , s.descrizione
-      , extract('Y' from s.inizio) anno
-      , max(ore.data) as last
-    from scavo s
-    LEFT JOIN localizzazione l ON l.scavo = s.id
-    left join osm c on l.comune = c.osm_id
-    left join ore on ore.scavo = s.id  WHERE osm_id = 47018 and extract('Y' from s.inizio) = 2023 group by s.id, c.osm_id, c.name, s.nome_lungo, s.sigla, s.descrizione
-    order by last desc NULLS LAST, nome asc, anno desc;
+select scavo.id scavo, scavo.nome_lungo nome, scavo.sigla, us.us, sacchetto.inventario, sacchetto.numero, sacchetto.descrizione, reperto.materiale, reperto.tipologia
+from scavo
+inner join us on us.scavo = scavo.id
+inner join sacchetto on sacchetto.us = us.id
+inner join reperto on reperto.sacchetto = sacchetto.id
+-- inner join list.materiale m on reperto.materiale = m.value
+-- inner join list.tipologia t on reperto.tipologia = t.value
+where scavo.id = 124
+order by numero asc
