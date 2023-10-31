@@ -5,7 +5,8 @@ ul, .list-scroll{overflow: auto;}
 .list-key::after{content:':'}
 .list-info .list-value{width:calc(100% - 130px);}
 .list-diario, .list-reperti, .list-campioni, .list-sacchetti{height: 600px;}
-#wrapListFotopiani .list-scroll, #wrapListUs .list-scroll{height: 450px;}
+#wrapListUs .list-scroll{height: 450px;}
+#wrapListFotopiani .list-scroll{height: 476px;}
 #listaOre{height: 300px;}
 .map{position: relative; width: 100vw; height: 300px; background: #fff; margin-top: 50px;z-index:5;}
 .round {transform: rotate(-90deg); transition: all 1s ease-in-out; fill: none; stroke-width: 5; stroke-linecap: round; stroke-dasharray: 0 999;}

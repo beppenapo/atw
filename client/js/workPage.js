@@ -1,11 +1,13 @@
 const work = $('[name=work]').val();
 let name = $('[name=name]').val();
+let sigla;
 let lon,lat, totOre, percOre, ore = 0, color;
 
 $("[name=modInfoWork]").on('click', (el) =>{ $.redirectPost('modInfoWork.php',{id:work}); })
 
 
 postData("lavoro.php", {dati:{trigger:'getWork',id:work}}, function(data){
+  sigla = data[0].sigla;
   totOre = data[0].tot_ore;
   $('[name=name]').val(data[0].nome);
   $(".nomeScavo").text(data[0].nome);
@@ -141,7 +143,6 @@ function initSectionOre(totOre){
 //NOTE: sezione gestione diario
 function initDiario(name){
   postData("lavoro.php", {dati:{trigger:'getDiario',id:work}}, function(data){
-    console.log(data);
     $.each(data, function(index, val) {
       let item = $("<li/>", {class:'list-group-item'}).appendTo('.list-diario');
       let testo = truncate(val.descrizione,50)
@@ -187,6 +188,8 @@ function getDiarioGiornaliero(data){
 //NOTE: sezione fotopiani
 $(".wrapListFotopiani").hide();
 postData("lavoro.php", {dati:{trigger:'getFotopiani',id:work}}, function(data){
+  const fotopiani = Object.assign(data.da_elaborare, data.elaborati)
+  $("#scarica-fotopiani").on('click', function(){ getCsv(fotopiani, sigla+"_fotopiani"); })
   const daElaborareTot = data.da_elaborare.length;
   const elaboratiTot = data.elaborati.length;
   const totFotopiani = daElaborareTot + elaboratiTot;
@@ -228,7 +231,9 @@ function initReperti(){
   let totale=[];
   let color = [];
   postData("sacchetti.php", {dati:{trigger:'getSacchetti',id:work}}, function(data){
-    console.log(data);
+    $("#scarica-reperti").on('click', function(){ getCsv(data.reperti, sigla+"_reperti"); })
+    $("#scarica-campioni").on('click', function(){ getCsv(data.campioni, sigla+"_campioni"); })
+    $("#scarica-sacchetti").on('click', function(){ getCsv(data.sacchetti, sigla+"_sacchetti"); })
     $("#totReperti").text(data.reperti.length);
     $("#totCampioni").text(data.campioni.length);
     $("#totSacchetti").text(data.sacchetti.length);
@@ -240,10 +245,6 @@ function initReperti(){
       $("<small/>",{class:'d-block', text:val.note}).appendTo(item);
 
       let repertoNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(item);
-
-      // let repertoView = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'repertoView'}).appendTo(repertoNavDiv);
-      // $("<i/>", {class:'fas fa-eye'}).appendTo(repertoView);
-      //
       let repertoEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'repertoEdit'}).appendTo(repertoNavDiv);
       $("<i/>", {class:'fas fa-edit'}).appendTo(repertoEdit);
       repertoEdit.on('click', function(){
@@ -276,3 +277,29 @@ function initReperti(){
     });
   })
 }
+
+const getCsv = async function (data, nomeFile) { 
+  const csvdata = csvmaker(data); 
+  download(csvdata, nomeFile); 
+} 
+
+const csvmaker = function (data) { 
+  csvRows = []; 
+  const headers = Object.keys(data[0]); 
+  csvRows.push(headers.join(',')); 
+  for (const row of data) { 
+    const values = headers.map(e => { return row[e] }) 
+    csvRows.push(values.join(',')) 
+  } 
+  return csvRows.join('\n') 
+}
+
+
+const download = function (data, nomeFile) { 
+  const blob = new Blob([data], { type: 'text/csv' }); 
+  const url = window.URL.createObjectURL(blob) 
+  const a = document.createElement('a') 
+  a.setAttribute('href', url) 
+  a.setAttribute('download', nomeFile+'.csv'); 
+  a.click() 
+} 

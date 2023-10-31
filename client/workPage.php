@@ -228,6 +228,9 @@
             </div>
           </div>
         </div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-sm btn-secondary" id="scarica-fotopiani"><span class="fa-solid fa-download"></span> scarica fotopiani</button>
+        </div>
       </div>
 
       <div class="card mb-3" id="reperti">
@@ -238,6 +241,9 @@
           </h6>
         </div>
         <div class="list-scroll list-reperti"></div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-sm btn-secondary" id="scarica-reperti"><span class="fa-solid fa-download"></span> scarica reperti</button>
+        </div>
       </div>
 
       <div class="card mb-3" id="campioni">
@@ -248,6 +254,9 @@
           </h6>
         </div>
         <div class="list-scroll list-campioni"></div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-sm btn-secondary" id="scarica-campioni"><span class="fa-solid fa-download"></span> scarica campioni</button>
+        </div>
       </div>
 
       <div class="card mb-3" id="sacchetti">
@@ -258,6 +267,9 @@
           </h6>
         </div>
         <div class="list-scroll list-sacchetti"></div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-sm btn-secondary" id="scarica-sacchetti"><span class="fa-solid fa-download"></span> scarica sacchetti</button>
+        </div>
       </div>
     </main>
     <?php require_once("inc/lib.html"); ?>
