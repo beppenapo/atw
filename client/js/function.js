@@ -396,3 +396,18 @@ function randomColor(a){
   // a = (getByte(50, 100) * 0.01).toFixed(2);
   return "rgb("+r+","+g+","+b+","+a+")";
 }
+
+
+function getDate(){
+  let data = new Date();
+  let day = data.getDate();
+  day = day < 10 ? '0' + day : day;
+  let month = data.getMonth() + 1;
+  month = month < 10 ? '0' + month : month;
+  let year = data.getFullYear();
+  let hour = data.getHours();
+  let min = data.getMinutes();
+  let sec = data.getSeconds();
+  // return data.toLocaleString();
+  return {day:day, month:month, year:year, hour:hour, min:min, sec:sec}
+}

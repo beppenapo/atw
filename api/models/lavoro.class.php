@@ -11,24 +11,33 @@ class Lavoro extends Db{
 
   public function getUs(int $id){
     $out=array();
-    $sql = "select us.id, us.us, tipo.id id_tipo, tipo.value as tipo, us.definizione, us_info.descrizione, us.compilazione, concat(usr.nome,' ', usr.cognome) as compilatore, us.chiusa from us, us_info, list.tipo_us tipo, users usr where us_info.us = us.id and us.tipo = tipo.id and us.compilatore = usr.id and us.scavo = ".$id." and chiusa = 't' ORDER by us desc;";
-    $chiuse = $this->simple($sql);
-    $sql = "select us.id, us.us, tipo.id id_tipo, tipo.value as tipo, us.definizione, us_info.descrizione, us.compilazione, concat(usr.nome,' ', usr.cognome) as compilatore, us.chiusa from us, us_info, list.tipo_us tipo, users usr where us_info.us = us.id and us.tipo = tipo.id and us.compilatore = usr.id and us.scavo = ".$id." and chiusa = 'f' ORDER by us desc;";
-    $aperte = $this->simple($sql);
-    $out['chiuse']=$chiuse;
-    $out['aperte']=$aperte;
+    $sqlScreen = "select us.id, us.us, tipo.id id_tipo, tipo.value as tipo, us.definizione, us_info.descrizione, us.compilazione, concat(usr.nome,' ', usr.cognome) as compilatore, us.chiusa from us, us_info, list.tipo_us tipo, users usr where us_info.us = us.id and us.tipo = tipo.id and us.compilatore = usr.id and us.scavo = ".$id." ORDER by us desc;";
+    $sqlCsv = "select scavo.nome_lungo nome,scavo.sigla,us.us,initcap(tipo.value) tipo,us.compilazione,concat(users.cognome,' ',users.nome) compilatore,rubrica.nome direttore,us.definizione,area.area,area.saggio,area.settore,area.ambiente,area.quadrato, regexp_replace(info.descrizione, E'(^[\\n\\r]+)|([\\n\\r]+$)', '', 'g' ) descrizione,initcap(info.criterio) criterio,initcap(info.formazione)formazione,initcap(affidabilita.value) affidabilita,initcap(consistenza.value) consistenza,initcap(info.colore) colore,initcap(conservazione.value) conservazione,info.interpretazione,info.osservazioni,info.elem_datanti \"elementi datanti\",info.periodo,info.dati_quantit \"dati quantitativi reperti\",info.modalita,info.datazione,array_to_string(array_agg(concat(rapporto.rapporto,' ',rapporti.us2) order by rapporto.rapporto), ',') rapporti from us inner join scavo on us.scavo = scavo.id inner join list.tipo_us tipo on us.tipo = tipo.id inner join users on us.compilatore = users.id inner join rubrica on scavo.direttore = rubrica.id left join us_area area on area.us = us.id left join us_info info on info.us = us.id left join list.affidabilita_us affidabilita on affidabilita.id = info.affidabilita left join list.conservazione_us conservazione on conservazione.id = info.conservazione left join list.consistenza_us consistenza on consistenza.id = info.consistenza left join us_rapporti rapporti on rapporti.us = us.id left join list.rapporti_us rapporto on rapporti.rapporto = rapporto.id where us.scavo = ".$id." group by scavo.nome_lungo, scavo.sigla, us.us, tipo.value, us.compilazione, users.cognome,users.nome, rubrica.nome, us.definizione, area.area, area.saggio, area.settore, area.ambiente, area.quadrato, info.descrizione, info.criterio, info.formazione, affidabilita.value, consistenza.value, info.colore, conservazione.value, info.interpretazione, info.osservazioni, info.elem_datanti, info.periodo, info.dati_quantit, info.modalita, info.datazione order by us.us asc;";
+    $out['screen'] = $this->simple($sqlScreen); 
+    $out['csv'] = $this->simple($sqlCsv); 
     return $out;
   }
 
-  public function getOre(int $id = null){
-    $filter = $id !== null ? "and o.scavo = ".$id : "";
-    $sql = "select o.id, o.data, o.ore, concat(u.cognome,' ',u.nome) as operatore from ore o, users u where o.operatore = u.id ".$filter." order by o.data desc;";
+  public function getOre(array $dati){
+    $filter = [];
+    if(isset($dati['id'])){array_push($filter, "o.scavo = ".$dati['id']);}
+    if(isset($dati['item'])){array_push($filter, "o.id = ".$dati['item']);}
+    if(isset($dati['giorno'])){array_push($filter, "o.data = ".$dati['giorno']);}
+    if(count($filter) > 0 ){ $filter = "where ".join(" and ", $filter);}
+    // $filter = isset($dati['id']) ? "and o.scavo = ".$dati['id'] : "";
+    $sql = "
+      select o.id, o.data, o.ore, o.operatore operatore_id, concat(u.cognome,' ',u.nome) as operatore from ore o inner join users u on o.operatore = u.id ".$filter." order by o.data desc;";
     return $this->simple($sql);
   }
 
   public function getDiario(int $id = null){
-    $sql = "select d.id diario, d.data, d.descrizione, concat(u.nome,' ',u.cognome) operatore from diario d inner join users u on d.operatore = u.id where d.scavo = ".$id." order by d.data desc;";
-    return $this->simple($sql);
+    $out = [];
+    $sqlScreen = "select d.id diario, d.data, d.descrizione, concat(u.nome,' ',u.cognome) operatore from diario d inner join users u on d.operatore = u.id where d.scavo = ".$id." order by d.data desc;";
+
+    $sqlCsv = "select d.data, replace(d.descrizione,E'\n',''), concat(u.nome,' ',u.cognome) operatore from diario d inner join users u on d.operatore = u.id where d.scavo = ".$id." order by d.data desc;";
+    $out['screen'] = $this->simple($sqlScreen);
+    $out['csv'] = $this->simple($sqlCsv);
+    return $out;
   }
   public function getDiarioGiornaliero(array $dati){
     $sql = "select d.id, d.descrizione, concat(u.nome,' ',u.cognome) as operatore from diario d, users u where d.operatore = u.id and d.scavo = ".$dati['scavo']." and d.data = '".$dati['data']."';";
@@ -41,13 +50,8 @@ class Lavoro extends Db{
   }
 
   public function getFotopiani(int $id = null){
-    $output = array();
-    $filter = $id !== null ? "and fotopiano.scavo = ".$id : "";
-    $sql="select * from fotopiano where elaborato = 'f' ".$filter." order by num_fotopiano asc;";
-    $output['da_elaborare'] = $this->simple($sql);
-    $sql="select * from fotopiano where elaborato = 't' ".$filter." order by num_fotopiano asc;";
-    $output['elaborati'] = $this->simple($sql);
-    return $output;
+    $sql = "select * from fotopiano where scavo = ".$id." order by num_fotopiano desc;";
+    return $this->simple($sql);
   }
 
   public function addWork($dati=array()){
@@ -113,8 +117,26 @@ class Lavoro extends Db{
     $sql = "insert into ore(scavo, data, ore, operatore) values (:scavo, :data, :ore, :operatore)";
     return $this->prepared($sql,$dati);
   }
-  public function updateOre(int $id){}
-  public function deleteOre(int $id){}
+
+  public function updateOre(array $dati){
+    $this->pdo()->beginTransaction();
+    foreach ($dati['dati'] as $item) {
+      $sql = "update ore set operatore = :operatore, ore = :ore, data=:data where id = :id";
+      $out = $this->prepared($sql, $item);
+    }
+    $this->pdo()->commit();
+    return $out;
+  }
+
+  public function deleteOre(int $id){
+    $sql ="delete from ore where id = :id";
+    return $this->prepared($sql,["id"=>$id]);
+  }
+
+  public function eliminaGiornata(array $dati){
+    $sql = "delete from ore where scavo =:scavo and data=:data";
+    return $this->prepared($sql,$dati);
+  }
 
   public function addDiario($dati=array()){
     $sql = "insert into diario(scavo, data, operatore, descrizione) values (:scavo, :data, :operatore, :descrizione)";

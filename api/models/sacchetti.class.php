@@ -93,7 +93,7 @@ class Sacchetto extends Db{
 
   private function getReperti(int $id = null){
     $filter = $id !== null ? "WHERE s.scavo = ".$id : "";
-    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione reperto,s.consegnato, r.materiale, r.tipologia
+    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione reperto,s.consegnato, r.materiale, r.tipologia, s.data
     FROM sacchetto s
     JOIN reperto r ON r.sacchetto = s.id
     JOIN us ON s.us = us.id
@@ -104,7 +104,7 @@ class Sacchetto extends Db{
 
   private function getCampioni(int $id = null){
     $filter = $id !== null ? "WHERE s.scavo = ".$id : "";
-    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione,t.value as tipo
+    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione,t.value as tipo, s.data
     FROM sacchetto s
     JOIN campione c ON c.sacchetto = s.id
     JOIN list.tipo_campione t ON c.tipologia = t.id
@@ -117,7 +117,7 @@ class Sacchetto extends Db{
   private function getGenerici(int $id = null){
     $filter = " where s.tipologia = 3 ";
     $filter = $id !== null ? $filter ."and s.scavo = ".$id : $filter;
-    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione
+    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione, s.data
     FROM sacchetto s
     JOIN us ON s.us = us.id
     ".$filter."

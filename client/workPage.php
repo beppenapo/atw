@@ -15,6 +15,7 @@
     <?php require_once("inc/header.html"); ?>
     <?php require_once("inc/nav.html"); ?>
     <?php require_once("inc/modal.html"); ?>
+    <?php require_once("inc/toast.html"); ?>
     <div class="map" id="map">
       <div class="nomeScavo text-dark"></div>
     </div>
@@ -129,9 +130,11 @@
             <span class="list-value" id="direttore"></span>
           </li>
           <li class="list-group-item">
-            <button type="button" name="button" class="btn btn-danger form-control">elimina scavo</button>
-          </li>
-        </ul>
+            </li>
+          </ul>
+          <div class="card-footer">
+            <button type="button" name="button" class="btn btn-sm btn-danger">elimina scavo</button>
+          </div>
       </div>
 
       <div class="card mb-3" id="ore">
@@ -141,14 +144,19 @@
             <span class="float-right badge badge-light totOre"></span>
           </h6>
         </div>
-        <div class="point">
-          <svg viewbox="0 0 100 100" width="100%" height="300">
-            <circle class="bgRound" cx="50" cy="50" r="40"/>
-            <circle class="round" cx="-50" cy="50" r="40"/>
-            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="svg-text"></text>
-          </svg>
+        <div class="card-body">
+          <div class="point">
+            <svg viewbox="0 0 100 100" width="100%" height="300">
+              <circle class="bgRound" cx="50" cy="50" r="40"/>
+              <circle class="round" cx="-50" cy="50" r="40"/>
+              <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="svg-text"></text>
+            </svg>
+          </div>
+          <div id="listaOre" class="details list-scroll"></div>
         </div>
-        <div id="listaOre" class="details list-scroll"></div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-sm btn-secondary" id="scarica-ore"><span class="fa-solid fa-download"></span> scarica ore</button>
+        </div>
       </div>
 
       <div class="card mb-3" id="us">
@@ -158,31 +166,9 @@
             <span class="float-right badge badge-light" id="totUs"></span>
           </h6>
         </div>
-        <div class="py-3 px-2">
-          <div class="progress" style="height:50px;">
-            <div class="progress-bar bg-danger usAperte" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span id="usAperteTot"></span> in lavorazione</div>
-            <div class="progress-bar bg-success usChiuse" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span id="usChiuseTot"></span> schede chiuse</div>
-          </div>
-        </div>
-        <div id="wrapListUs">
-          <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="nav-usAperte-tab" data-toggle="tab" href="#usAperteList" role="tab" aria-controls="usAperteList" aria-selected="true">In lavorazione</a>
-              <a class="nav-item nav-link" id="nav-usChiuse-tab" data-toggle="tab" href="#usChiuseList" role="tab" aria-controls="usChiuseList" aria-selected="false">Schede chiuse</a>
-            </div>
-          </nav>
-          <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="usAperteList" role="tabpanel" aria-labelledby="nav-usAperte-tab">
-              <div class="list-scroll">
-                <div class="list-us-aperte"></div>
-              </div>
-            </div>
-            <div class="tab-pane fade" id="usChiuseList" role="tabpanel" aria-labelledby="nav-usChiuse-tab">
-              <div class="wrapList list-scroll">
-                <div class="list-us-chiuse"></div>
-              </div>
-            </div>
-          </div>
+        <div class="list-scroll list-us"></div>
+        <div class="card-footer">
+          <button type="button" class="btn btn-sm btn-secondary" id="scarica-us"><span class="fa-solid fa-download"></span> scarica us</button>
         </div>
       </div>
 
@@ -190,9 +176,13 @@
         <div class="card-header bg-secondary text-white">
           <h6>Diario giornaliero
             <a href="#map" class="float-right ml-4 d-block d-md-none"><i class="fa-solid fa-arrow-up text-white"></i></a>
+            <span class="float-right badge badge-light" id="totDiario"></span>
           </h6>
         </div>
         <ul class="list-group list-group-flush list-diario"></ul>
+        <div class="card-footer">
+          <button type="button" class="btn btn-sm btn-secondary" id="scarica-diario"><span class="fa-solid fa-download"></span> scarica diario</button>
+        </div>
       </div>
 
       <div class="card mb-3" id="fotopiani">
@@ -202,32 +192,7 @@
             <span class="float-right badge badge-light" id="totFotopiani"></span>
           </h6>
         </div>
-        <div class="py-3 px-2">
-          <div class="progress" style="height:50px;">
-            <div class="progress-bar bg-danger noEl" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span id="daElaborareTot"></span> da elaborare</div>
-            <div class="progress-bar bg-success el" role="progressbar" aria-valuemin="0" aria-valuemax="100"><span id="elaboratiTot"></span> elaborati</div>
-          </div>
-        </div>
-        <div id="wrapListFotopiani">
-          <nav>
-            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-              <a class="nav-item nav-link active" id="nav-nonEl-tab" data-toggle="tab" href="#nonElList" role="tab" aria-controls="nonElList" aria-selected="true">Non elaborati</a>
-              <a class="nav-item nav-link" id="nav-el-tab" data-toggle="tab" href="#elList" role="tab" aria-controls="elList" aria-selected="false">Elaborati</a>
-            </div>
-          </nav>
-          <div class="tab-content" id="nav-tabContent">
-            <div class="tab-pane fade show active" id="nonElList" role="tabpanel" aria-labelledby="nav-nonEl-tab">
-              <div class="list-scroll">
-                <div class="list-fotopiani-daFare"></div>
-              </div>
-            </div>
-            <div class="tab-pane fade" id="elList" role="tabpanel" aria-labelledby="nav-el-tab">
-              <div class="list-scroll">
-                <div class="list-fotopiani-fatti"></div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="list-scroll list-fotopiani"></div>
         <div class="card-footer">
           <button type="button" class="btn btn-sm btn-secondary" id="scarica-fotopiani"><span class="fa-solid fa-download"></span> scarica fotopiani</button>
         </div>

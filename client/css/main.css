@@ -7,7 +7,7 @@ details{padding:.75rem 1.25rem;border-bottom:1px solid rgba(0,0,0,.125);}
 summary{font-weight: bold;}
 summary:focus{outline: none !important;}
 details > div{padding-left: 1.25rem}
-details > div:nth-child(odd){background-color: #e4eff9;}
+details > div:nth-child(odd):not(:last-child){background-color: #e4eff9;}
 details > div > span{display: inline-block;}
 .animation{-webkit-transition: all .5s ease; -moz-transition: all .5s ease; -ms-transition: all .5s ease; -o-transition: all .5s ease; transition: all .5s ease;}
 .btn-disabled{cursor: default;}

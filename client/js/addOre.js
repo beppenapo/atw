@@ -1,5 +1,6 @@
+const work = $("[name=scavo]").val()
 getList({userObj});
-$(".backBtn").on('click', function() { $.redirectPost("workPage.php", {id:postId});});
+$(".backBtn").on('click', function() { $.redirectPost("workPage.php", {id:work});});
 $('[name=submit]').on('click', function (e) {
   form = $("#formOre");
   isvalidate = $(form)[0].checkValidity()
