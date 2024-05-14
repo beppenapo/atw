@@ -59,7 +59,27 @@ class Sacchetto extends Db{
     $this->prepared($updateRepertoSql,$repertoArr);
     $this->commitTransaction();
     return array('res'=>true);
+  }  
+  
+  public function updateCampione(array $dati){
+    $campioneArr = array("sacchetto"=>$dati['sacchetto'], "tipologia"=>$dati['tipologia']);
+    $sacchettoArr = array(
+      "id"=>$dati['sacchetto'],
+      "us"=>$dati['us'],
+      "descrizione"=>$dati['descrizione'],
+      "data"=>$dati['data'],
+      "compilatore"=>$dati['compilatore'],
+      "modificato_da"=>$dati['modificato_da']
+    );
+    $updateSacchettoSql = "update sacchetto set us = :us, descrizione = :descrizione, data = :data, compilatore = :compilatore, modificato_il = default, modificato_da = :modificato_da where id = :id;";
+    $updateCampioneSql = "update campione set tipologia = :tipologia where sacchetto = :sacchetto;";
+    $this->begin();
+    $this->prepared($updateSacchettoSql,$sacchettoArr);
+    $this->prepared($updateCampioneSql,$campioneArr);
+    $this->commitTransaction();
+    return array('res'=>true);
   }
+
   public function delSacchetto(int $id){}
 
   private function nuovoSacchetto($dati = array()){
@@ -87,6 +107,10 @@ class Sacchetto extends Db{
 
   public function getReperto(int $sacchetto){
     $sql = "select * from sacchetto, reperto where reperto.sacchetto = sacchetto.id and sacchetto.id = ".$sacchetto.";";
+    return $this->simple($sql)[0];
+  }  
+  public function getCampione(int $sacchetto){
+    $sql = "select s.data, s.us, c.tipologia, s.descrizione, s.compilatore from sacchetto s inner join campione c on c.sacchetto = s.id and s.id = ".$sacchetto.";";
     return $this->simple($sql)[0];
   }
 

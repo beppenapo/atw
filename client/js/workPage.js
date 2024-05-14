@@ -224,7 +224,7 @@ function initReperti(){
       let repertoEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'repertoEdit'}).appendTo(repertoNavDiv);
       $("<i/>", {class:'fas fa-edit'}).appendTo(repertoEdit);
       repertoEdit.on('click', function(){
-        $.redirectPost('editReperto.php',{scavo:work,sacchetto:val.id});
+        $.redirectPost('editReperto.php',{cantiere:nome_scavo,scavo:work,sacchetto:val.id});
       });
 
       let consActive = '';
@@ -245,7 +245,15 @@ function initReperti(){
       let item = $("<div/>",{class:'py-2 px-3 border-bottom'}).appendTo('.list-campioni');
       $("<small/>",{class:'font-weight-bold d-block', text:"campione num. "+val.numero+" in US"+val.us+" (inv."+val.inventario+")"}).appendTo(item);
       $("<small/>",{class:'d-block', text:val.descrizione}).appendTo(item);
+
+      let campioneNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(item);
+      let campioneEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'campioneEdit'}).appendTo(campioneNavDiv);
+      $("<i/>", {class:'fas fa-edit'}).appendTo(campioneEdit);
+      campioneEdit.on('click', function(){
+        $.redirectPost('editCampione.php',{cantiere:nome_scavo,scavo:work,sacchetto:val.id});
+      });
     });
+    
     $.each(data.sacchetti, function(index, val) {
       let item = $("<div/>",{class:'py-2 px-3 border-bottom'}).appendTo('.list-sacchetti');
       $("<small/>",{class:'font-weight-bold d-block', text:"sacchetto num. "+val.numero+" in US"+val.us+" (inv."+val.inventario+")"}).appendTo(item);
