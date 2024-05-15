@@ -63,14 +63,7 @@ class Sacchetto extends Db{
   
   public function updateCampione(array $dati){
     $campioneArr = array("sacchetto"=>$dati['sacchetto'], "tipologia"=>$dati['tipologia']);
-    $sacchettoArr = array(
-      "id"=>$dati['sacchetto'],
-      "us"=>$dati['us'],
-      "descrizione"=>$dati['descrizione'],
-      "data"=>$dati['data'],
-      "compilatore"=>$dati['compilatore'],
-      "modificato_da"=>$dati['modificato_da']
-    );
+    $sacchettoArr = array("id"=>$dati['sacchetto'], "us"=>$dati['us'], "descrizione"=>$dati['descrizione'], "data"=>$dati['data'], "compilatore"=>$dati['compilatore'], "modificato_da"=>$dati['modificato_da']);
     $updateSacchettoSql = "update sacchetto set us = :us, descrizione = :descrizione, data = :data, compilatore = :compilatore, modificato_il = default, modificato_da = :modificato_da where id = :id;";
     $updateCampioneSql = "update campione set tipologia = :tipologia where sacchetto = :sacchetto;";
     $this->begin();
@@ -78,6 +71,13 @@ class Sacchetto extends Db{
     $this->prepared($updateCampioneSql,$campioneArr);
     $this->commitTransaction();
     return array('res'=>true);
+  }
+
+  public function updateSacchetto(array $dati){
+    $updateSacchettoSql = "update sacchetto set us = :us, descrizione = :descrizione, data = :data, compilatore = :compilatore, modificato_il = default, modificato_da = :modificato_da where id = :sacchetto;";
+    $this->prepared($updateSacchettoSql,$dati);
+    return array('res'=>true);
+
   }
 
   public function delSacchetto(int $id){}
@@ -100,8 +100,8 @@ class Sacchetto extends Db{
     return $out;
   }
 
-  public function setConsegnato(array $rep){
-    $sql="update sacchetto set consegnato = ".$rep['stato']." where scavo = ".$rep['scavo']." and id = ".$rep['reperto'].";";
+  public function setConsegnato(array $sacchetto){
+    $sql="update sacchetto set consegnato = ".$sacchetto['stato']." where scavo = ".$sacchetto['scavo']." and id = ".$sacchetto['sacchetto'].";";
     return $this->simple($sql);
   }
 
@@ -112,6 +112,9 @@ class Sacchetto extends Db{
   public function getCampione(int $sacchetto){
     $sql = "select s.data, s.us, c.tipologia, s.descrizione, s.compilatore from sacchetto s inner join campione c on c.sacchetto = s.id and s.id = ".$sacchetto.";";
     return $this->simple($sql)[0];
+  }
+  public function getSacchetto(int $sacchetto){
+    return $this->simple("select * from sacchetto where id = ".$sacchetto)[0];
   }
 
 
@@ -128,7 +131,7 @@ class Sacchetto extends Db{
 
   private function getCampioni(int $id = null){
     $filter = $id !== null ? "WHERE s.scavo = ".$id : "";
-    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione,t.value as tipo, s.data
+    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione, s.consegnato, t.value as tipo, s.data
     FROM sacchetto s
     JOIN campione c ON c.sacchetto = s.id
     JOIN list.tipo_campione t ON c.tipologia = t.id
@@ -141,7 +144,7 @@ class Sacchetto extends Db{
   private function getGenerici(int $id = null){
     $filter = " where s.tipologia = 3 ";
     $filter = $id !== null ? $filter ."and s.scavo = ".$id : $filter;
-    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione, s.data
+    $sql="SELECT s.id, us.us, s.inventario, s.numero, s.descrizione, s.data, s.consegnato
     FROM sacchetto s
     JOIN us ON s.us = us.id
     ".$filter."

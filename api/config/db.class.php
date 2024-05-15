@@ -40,7 +40,7 @@ class Db extends Conn{
       $row = $pdo->query($sql)->rowCount();
       return $row;
     } catch (Exception $e) {
-      $this->msg =  "errore: ".$e->getMessage();
+      return  "errore: ".$e->getMessage();
     }
   }
   protected function begin(){$this->pdo()->beginTransaction();}

@@ -9,6 +9,32 @@ class Lavoro extends Db{
     return $this->simple($sql);
   }
 
+  public function addWork($dati=array()){
+    try {
+      $this->pdo()->beginTransaction();
+      $dati['scavo']['creato_da'] = $_SESSION['id'];
+      $scavoId = $this->addScavo($dati['scavo']);
+      $dati['config']['scavo']=$scavoId['field'][0];
+      $this->addScavoConfig($dati['config']);
+      if (isset($dati['localizzazione'])) {
+        $dati['localizzazione']['scavo']=$scavoId['field'][0];
+        $this->addLocalizzazione($dati['localizzazione']);
+      }
+      $this->pdo()->commit();
+      return array('res'=>true, 'id'=>$scavoId['field'][0]);
+    } catch (\PDOException $e) {
+      $this->pdo()->rollBack();
+      return $e->getMessage();
+    }
+  }
+
+  public function modInfoWork(array $dati){
+    $filter = array("id" => $dati['id']);
+    $sql = $this->buildUpdate('scavo',$filter, $dati);
+    $exec = $this->prepared($sql,$dati);
+    return $exec;
+  }
+
   public function getUs(int $id){
     $out=array();
     $sqlScreen = "select us.id, us.us, tipo.id id_tipo, tipo.value as tipo, us.definizione, us_info.descrizione, us.compilazione, concat(usr.nome,' ', usr.cognome) as compilatore, us.chiusa from us, us_info, list.tipo_us tipo, users usr where us_info.us = us.id and us.tipo = tipo.id and us.compilatore = usr.id and us.scavo = ".$id." ORDER by us desc;";
@@ -54,24 +80,7 @@ class Lavoro extends Db{
     return $this->simple($sql);
   }
 
-  public function addWork($dati=array()){
-    try {
-      $this->pdo()->beginTransaction();
-      $dati['scavo']['creato_da'] = $_SESSION['id'];
-      $scavoId = $this->addScavo($dati['scavo']);
-      $dati['config']['scavo']=$scavoId['field'][0];
-      $this->addScavoConfig($dati['config']);
-      if (isset($dati['localizzazione'])) {
-        $dati['localizzazione']['scavo']=$scavoId['field'][0];
-        $this->addLocalizzazione($dati['localizzazione']);
-      }
-      $this->pdo()->commit();
-      return array('res'=>true, 'id'=>$scavoId['field'][0]);
-    } catch (\PDOException $e) {
-      $this->pdo->rollBack();
-      return $e->getMessage();
-    }
-  }
+
 
   private function addScavo($dati = array()){
     try {
@@ -105,12 +114,7 @@ class Lavoro extends Db{
     }
   }
 
-  public function modInfoWork(array $dati){
-    $filter = array("id" => $dati['id']);
-    $sql = $this->buildUpdate('scavo',$filter, $dati);
-    $exec = $this->prepared($sql,$dati);
-    return $exec;
-  }
+
   public function deleteWork(int $id){}
 
   public function addOre($dati=array()){
@@ -166,6 +170,10 @@ class Lavoro extends Db{
     return $this->returning($sql,$dati);
   }
 
+  public function setElaborato(array $dati){
+    $sql = "update fotopiano set elaborato = :elaborato where scavo = :scavo and id = :id";
+    return $this->prepared($sql,$dati);
+  }
 
 
 }

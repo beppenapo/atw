@@ -61,9 +61,9 @@ function initUs(scavo){
       if (count_words(definizione) == 50) {definizione = definizione+" ...";}
       $("<small/>",{class:'d-block', html:definizione}).appendTo(item);
       let usNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(item);
-      let usView = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'usView'}).appendTo(usNavDiv);
+      let usView = $('<button/>',{class:'btn btn-sm btn-light toolBtn', name:'usView'}).appendTo(usNavDiv);
       $("<i/>", {class:'fas fa-eye'}).appendTo(usView);
-      let usEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'usView'}).appendTo(usNavDiv);
+      let usEdit = $('<button/>',{class:'btn btn-sm btn-light toolBtn', name:'usView'}).appendTo(usNavDiv);
       $("<i/>", {class:'fas fa-edit'}).appendTo(usEdit);
       usView.on('click', function(event) {
         $(".modal-title").html("<h4>US num. "+prefix+el.us+"</h4><h6>"+el.tipo+"</h6>");
@@ -93,7 +93,7 @@ function initSectionOre(totOre){
         $("<div/>",{class:'py-2'}).html("<span class='w-75'>"+v.operatore+"</span><span class='w-25 text-right'>"+parseInt(v.ore)+"</span>").appendTo(details);
       });
       let oreNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(details);
-      let editOre = $('<a/>',{class:'btn btn-sm btn-light bg-white', href:'#',name:'editOre'}).appendTo(oreNavDiv);
+      let editOre = $('<a/>',{class:'btn btn-sm btn-light toolBtn', href:'#',name:'editOre'}).appendTo(oreNavDiv);
       $("<i/>", {class:'fas fa-edit'}).appendTo(editOre);
       editOre.on('click', function(e){
         e.preventDefault()
@@ -144,9 +144,9 @@ function initDiario(name){
       $("<small/>",{class:'d-block', html:nl2br(testo)}).appendTo(item);
       $("<small/>",{class:'font-weight-bold d-block', html:val.operatore}).appendTo(item);
       let diarioNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(item);
-      let diarioView = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'diarioView'}).appendTo(diarioNavDiv);
+      let diarioView = $('<button/>',{class:'btn btn-sm btn-light toolBtn', name:'diarioView'}).appendTo(diarioNavDiv);
       $("<i/>", {class:'fas fa-eye'}).appendTo(diarioView);
-      let diarioEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'diarioEdit'}).appendTo(diarioNavDiv);
+      let diarioEdit = $('<button/>',{class:'btn btn-sm btn-light toolBtn', name:'diarioEdit'}).appendTo(diarioNavDiv);
       $("<i/>", {class:'fas fa-edit'}).appendTo(diarioEdit);
       diarioView.on('click', function(event) {
         $(".modal-title").html("<h4>Diario del: "+val.data+"</h4>");
@@ -189,6 +189,31 @@ postData("lavoro.php", {dati:{trigger:'getFotopiani',id:work}}, function(data){
     data = $("<span/>", {class:'float-right', text:'('+val.data+')'}).appendTo(num);
     us = $("<small/>", {class:'d-block', text:val.us}).appendTo(item)
     note = $("<small/>", {class:'d-block', text:val.note}).appendTo(item)
+    let ftpNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(item);
+
+    let ftpEdit = $('<button/>',{class:'btn btn-sm btn-light toolBtn', name:'ftpEdit'}).appendTo(ftpNavDiv);
+    $("<i/>", {class:'fas fa-edit'}).appendTo(ftpEdit);
+    ftpEdit.on('click', function(){
+      $.redirectPost('editFotopiano.php',{cantiere:nome_scavo,scavo:work,ftp:val.id});
+    })
+
+    let ftpBtnClass = val.elaborato == true ? 'fa-solid text-success' : 'fa-regular';
+    let ftpBtnActive = val.elaborato == true ? 'active' : '';
+    let ftpElaboratoWrap = $('<div/>',{class:'btn-group-toggle'}).attr("data-toggle","buttons").appendTo(ftpNavDiv);
+    let ftpBtnLabel = $("<label/>", {class:'btn btn-sm btn-light toolBtn ftpElaborato'+ ftpBtnActive}).appendTo(ftpElaboratoWrap);
+    let ftpBtnCheck = $("<input/>", {type:'checkbox'}).prop("checked", val.elaborato).appendTo(ftpBtnLabel);
+    let ftpBtnIco = $("<i/>",{class: ftpBtnClass+' fa-square-check'}).appendTo(ftpBtnLabel);
+
+    ftpBtnCheck.on('click', function(){
+      let newClass = $(this).is(':checked') ? 'fa-solid text-success fa-square-check' : 'fa-regular fa-square-check';
+      ftpBtnIco.removeClass().addClass(newClass);
+      let dati = {trigger:'setElaborato', scavo:work, id:val.id, elaborato:$(this).is(':checked')}
+      postData("lavoro.php", {dati:dati}, function(data){
+        console.log(data);
+        let checkStato = $(this).is(':checked') ? 'elaborato': 'non elaborato';
+        alert('Il fotopiano è stato contrassegnato come ' + checkStato)
+      })
+    })
   });
 })
 
@@ -221,7 +246,7 @@ function initReperti(){
       $("<small/>",{class:'d-block', text:val.note}).appendTo(item);
 
       let repertoNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(item);
-      let repertoEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'repertoEdit'}).appendTo(repertoNavDiv);
+      let repertoEdit = $('<button/>',{class:'btn btn-sm btn-light toolBtn', name:'repertoEdit'}).appendTo(repertoNavDiv);
       $("<i/>", {class:'fas fa-edit'}).appendTo(repertoEdit);
       repertoEdit.on('click', function(){
         $.redirectPost('editReperto.php',{cantiere:nome_scavo,scavo:work,sacchetto:val.id});
@@ -230,35 +255,70 @@ function initReperti(){
       let consActive = '';
       if (val.consegnato == true) {consActive = 'active';}
       let repertoConsegnato = $('<div/>',{class:'btn-group-toggle'}).attr("data-toggle","buttons").appendTo(repertoNavDiv);
-      let repConsLabel = $("<label/>", {class:'btn btn-sm btn-light repConsegnato '+ consActive}).appendTo(repertoConsegnato);
+      let repConsLabel = $("<label/>", {class:'btn btn-sm btn-light toolBtn repConsegnato '+ consActive}).appendTo(repertoConsegnato);
       let repConsCheck = $("<input/>", {type:'checkbox'}).prop("checked", val.consegnato).appendTo(repConsLabel);
       $("<i/>",{class:'fas fa-handshake'}).appendTo(repConsLabel);
       repConsCheck.on('click', function(){
         let consegnato = $(this).is(':checked')
-        postData("sacchetti.php", {dati:{trigger:'setConsegnato',scavo:work, reperto: val.id, stato:consegnato}}, function(data){
-          let checkStato = consegnato == false ? 'non consegnato': 'consegnato';
-          alert('Il reperto è stato contrassegnato come ' + checkStato)
-        })
+        setConsegnato({scavo:work, sacchetto: val.id, stato:consegnato})
       })
     });
+    
     $.each(data.campioni, function(index, val) {
       let item = $("<div/>",{class:'py-2 px-3 border-bottom'}).appendTo('.list-campioni');
       $("<small/>",{class:'font-weight-bold d-block', text:"campione num. "+val.numero+" in US"+val.us+" (inv."+val.inventario+")"}).appendTo(item);
       $("<small/>",{class:'d-block', text:val.descrizione}).appendTo(item);
 
       let campioneNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(item);
-      let campioneEdit = $('<button/>',{class:'btn btn-sm btn-light bg-white pointer', name:'campioneEdit'}).appendTo(campioneNavDiv);
+      let campioneEdit = $('<button/>',{class:'btn btn-sm btn-light toolBtn', name:'campioneEdit'}).appendTo(campioneNavDiv);
       $("<i/>", {class:'fas fa-edit'}).appendTo(campioneEdit);
       campioneEdit.on('click', function(){
         $.redirectPost('editCampione.php',{cantiere:nome_scavo,scavo:work,sacchetto:val.id});
       });
+
+      let consActive = '';
+      if (val.consegnato == true) {consActive = 'active';}
+      let campioneConsegnato = $('<div/>',{class:'btn-group-toggle'}).attr("data-toggle","buttons").appendTo(campioneNavDiv);
+      let campioneConsLabel = $("<label/>", {class:'btn btn-sm btn-light toolBtn repConsegnato '+ consActive}).appendTo(campioneConsegnato);
+      let campioneConsCheck = $("<input/>", {type:'checkbox'}).prop("checked", val.consegnato).appendTo(campioneConsLabel);
+      $("<i/>",{class:'fas fa-handshake'}).appendTo(campioneConsLabel);
+      campioneConsCheck.on('click', function(){
+        let consegnato = $(this).is(':checked')
+        setConsegnato({scavo:work, sacchetto: val.id, stato:consegnato})
+      })
     });
     
     $.each(data.sacchetti, function(index, val) {
       let item = $("<div/>",{class:'py-2 px-3 border-bottom'}).appendTo('.list-sacchetti');
       $("<small/>",{class:'font-weight-bold d-block', text:"sacchetto num. "+val.numero+" in US"+val.us+" (inv."+val.inventario+")"}).appendTo(item);
       $("<small/>",{class:'d-block', text:val.descrizione}).appendTo(item);
+      
+      let sacchettoNavDiv = $("<div/>",{class:'d-flex justify-content-end'}).appendTo(item);
+      let sacchettoEdit = $('<button/>',{class:'btn btn-sm btn-light toolBtn', name:'campioneEdit'}).appendTo(sacchettoNavDiv);
+      $("<i/>", {class:'fas fa-edit'}).appendTo(sacchettoEdit);
+      sacchettoEdit.on('click', function(){
+        $.redirectPost('editSacchetto.php',{cantiere:nome_scavo,scavo:work,sacchetto:val.id});
+      });
+  
+      let consActive = '';
+      if (val.consegnato == true) {consActive = 'active';}
+      let sacchettoConsegnato = $('<div/>',{class:'btn-group-toggle'}).attr("data-toggle","buttons").appendTo(sacchettoNavDiv);
+      let sacchettoConsLabel = $("<label/>", {class:'btn btn-sm btn-light toolBtn repConsegnato '+ consActive}).appendTo(sacchettoConsegnato);
+      let sacchettoConsCheck = $("<input/>", {type:'checkbox'}).prop("checked", val.consegnato).appendTo(sacchettoConsLabel);
+      $("<i/>",{class:'fas fa-handshake'}).appendTo(sacchettoConsLabel);
+      sacchettoConsCheck.on('click', function(){
+        let consegnato = $(this).is(':checked')
+        setConsegnato({scavo:work, sacchetto: val.id, stato:consegnato})
+      })
     });
+  })
+}
+
+function setConsegnato(dati){
+  dati.trigger = 'setConsegnato';
+  postData("sacchetti.php", {dati:dati}, function(data){
+    let checkStato = dati.stato == false ? 'non consegnato': 'consegnato';
+    alert('Il sacchetto è stato contrassegnato come ' + checkStato)
   })
 }
 
