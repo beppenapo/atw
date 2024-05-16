@@ -13,7 +13,7 @@ ul, .list-scroll{overflow: auto;}
 .svg-text{font-size:20px; font-family: 'Roboto', sans-serif; fill:#000;}
 .map>.nomeScavo{position: absolute; bottom: 0; left: 0; width: 100vw; padding: 3px 0; margin: 0; text-align: center; font-size: 40px; z-index: 2000; background: rgba(0,0,0,.2);}
 
-.toolBtn, .toolBtn:hover, .toolBtn.active{background-color: transparent !important; border-color: transparent !important; font-size: 18px;}
+.toolBtn, .toolBtn:hover, .toolBtn.active, .toolBtn:focus, .toolBtn:focus-visible{background-color: transparent !important; border-color: transparent !important; box-shadow: none !important; font-size: 18px;}
 .repConsegnato:not(:disabled):not(.disabled).active, .repConsegnato:not(:disabled):not(.disabled):active, .show>.repConsegnato.dropdown-toggle {color: #dc3545;}
 
 @media (max-width: 575px) {

@@ -27,6 +27,8 @@ function getDiarioGiornaliero($lavoro){return json_encode($lavoro-> getDiarioGio
 function eliminaGiornata($lavoro){return json_encode($lavoro->eliminaGiornata($_POST['dati']['dati']));}
 
 function getFotopiani($lavoro){return json_encode($lavoro->getFotopiani($_POST['dati']['id']));}
+function getFotopiano($lavoro){return json_encode($lavoro->getFotopiano($_POST['dati']['id']));}
 function addFotopiano($lavoro){return json_encode($lavoro->addFotopiano($_POST['dati']));}
 function setElaborato($lavoro){return json_encode($lavoro->setElaborato($_POST['dati']));}
+function updateFotopiano($lavoro){return json_encode($lavoro->updateFotopiano($_POST['dati']));}
 ?>

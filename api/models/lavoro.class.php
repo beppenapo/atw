@@ -78,6 +78,9 @@ class Lavoro extends Db{
   public function getFotopiani(int $id = null){
     $sql = "select * from fotopiano where scavo = ".$id." order by num_fotopiano desc;";
     return $this->simple($sql);
+  }  
+  public function getFotopiano(int $id){
+    return $this->simple("select * from fotopiano where id = ".$id.";")[0];
   }
 
 
@@ -159,7 +162,16 @@ class Lavoro extends Db{
     $sql = "insert into fotopiano(scavo, data, us, autore, note, num_fotopiano) values (:scavo, :data, :us, :autore, :note, :num_fotopiano) returning num_fotopiano;";
     return $this->returning($sql,$dati);
   }
-  public function updateFotopiano(int $id){}
+
+  public function updateFotopiano(array $dati){
+    $id = $dati['id'];
+    unset($dati['id']);
+    $filter = array("id"=>$id);
+    $sql = $this->buildUpdate('fotopiano', $filter, $dati);
+    return $this->prepared($sql,$dati);
+  }
+
+
   public function deleteFotopiano(int $id){}
 
   public function addReperto($dati=array()){

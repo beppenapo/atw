@@ -6,15 +6,18 @@
   <head>
     <?php require_once("inc/meta.html"); ?>
     <?php require_once("inc/css.html"); ?>
+    <style>
+      .toolBtn, .toolBtn:hover, .toolBtn.active, .toolBtn:focus, .toolBtn:focus-visible{background-color: transparent !important; border-color: transparent !important; box-shadow: none !important;}
+    </style>
   </head>
   <body>
     <?php require_once("inc/header.html"); ?>
     <?php require_once("inc/nav.html"); ?>
     <?php require_once("inc/toast.html"); ?>
-    <input type="hidden" name="usrAct" value="<?php echo $_SESSION['id']; ?>">
-    <input type="hidden" name="scavo" value="<?php echo $_POST['scavo']; ?>">
-    <input type="hidden" name="ftp" value="<?php echo $_POST['ftp']; ?>">
     <main class="container pt-5 mt-5">
+      <input type="hidden" name="usrAct" value="<?php echo $_SESSION['id']; ?>">
+      <input type="hidden" name="scavo" value="<?php echo $_POST['scavo']; ?>">
+      <input type="hidden" name="ftp" value="<?php echo $_POST['ftp']; ?>">
       <form class="form bg-white py-5 px-3 border rounded shadow" id="formFotopiano">
         <div class="form-row">
           <div class="col border-bottom mb-3 text-center">
@@ -24,7 +27,17 @@
           </div>
         </div>
         <div class="form-row mb-3">
-          <div class="col-md-4">
+          <div class="col-md-2">
+            <label class="text-danger">Contrassegna come</label>
+            <div class="btn-group-toggle" data-toggle="buttons">
+              <label class="btn toolBtn">
+                <i id="ftpElaboratoIco" class="fa-regular fa-square-check"></i>
+                <span id="labelTxt">elaborato</span>
+                <input type="checkbox" name="elaborato" id="elaborato">
+              </label>
+            </div>
+          </div>
+          <div class="col-md-2">
             <label for="data" class="text-danger">Data</label>
             <input type="date" id="data" class="form-control" name="data" min="2005-01-01" max="<?php echo date('Y-m-d', strtotime('+1 year')); ?>" value="" required>
           </div>
