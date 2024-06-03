@@ -3,9 +3,7 @@ const name = $("[name=name]").val()
 const items = $("[name=items]").val().split(',')
 const form = $("#formOre")[0];
 
-
-// getOre(items)
-// postData("lavoro.php", {dati:{trigger:'getOre',id:work}}, function(data){
+screen.orientation.addEventListener("change", delOreBtnStyle);
   
 let maxDate = getDate()['year']+'-'+getDate()['month']+'-'+getDate()['day'];
 items.forEach((item,index) => {
@@ -30,21 +28,32 @@ items.forEach((item,index) => {
       })
     })
 
-    $("<button/>",{type:'button', class:'btn btn-danger'})
-      .css({"position":"absolute", "bottom":"0"})
-      .attr({"data-toggle":"tooltip", "data-placement":"top", "title":"elimina ore"})
-      .html('<i class="fas fa-trash" aria-hidden="true"></i>')
+    $("<button/>",{type:'button', class:'btn btn-danger delOreBtn'})
       .appendTo(toolbar)
       .on('click', function(){
         if(confirm('Stai per eliminare un record con le ore di un operatore, questo ricalcolerà la somma totale delle ore previste per il lavoro...clicca ok per confermare')){
           deleteOre(data[0].id)
         }
       })
+    delOreBtnStyle()
   })
 });
 $('[name=submit]').on('click', editOre)
 $(".backBtn").on('click', function() { $.redirectPost("workPage.php", {id:work});});
 
+function delOreBtnStyle(){
+  if(screen.width > 650){
+    $(".delOreBtn")
+      .css({"position":"absolute", "bottom":"0", "margin":"0"})
+      .attr({"data-toggle":"tooltip", "data-placement":"top", "title":"elimina ore"})
+      .html('<i class="fas fa-trash" aria-hidden="true"></i>')
+  }else{
+    $(".delOreBtn")
+      .css({"position":"relative", "margin":"10px 0"})
+      .attr({"data-toggle":"", "data-placement":"", "title":""})
+      .html('<i class="fas fa-trash" aria-hidden="true"></i> cancella ore')
+  }
+}
 
 function editOre(e){
   let form = $("#formOre")[0];
@@ -69,34 +78,6 @@ function editOre(e){
         $(".toast").toast({delay:3000});
         $(".toast").toast('show');
         setTimeout(() => {$.redirectPost('workPage.php', {id: work});}, 3000);
-      }else {
-        $(".toast").removeClass('[class^="bg-"]').addClass('bg-danger');
-        $("#headerTxt").html('Errore nella query');
-        $(".toast>.toast-body").html(data);
-        $(".toast").toast({delay:3000});
-        $(".toast").toast('show');
-      }
-    })
-  }
-  return false;
-  if (isvalidate) {
-    e.preventDefault()
-    dati={};
-    dati.scavo = $("[name=scavo]").val();
-    dati.ore = $("[name=ore]").val();
-    dati.data = $("[name=data]").val();
-    dati.operatore = $("[name=compilatore]").val();
-    dati.trigger="addOre";
-    postData("lavoro.php", {dati}, function(data){
-      if (data === true) {
-        $(".toast").removeClass('[class^="bg-"]').addClass('bg-success');
-        $(".toast>.toast-body").text('ore inserite correttamente');
-        $(".toast").toast({delay:3000});
-        $(".toast").toast('show');
-        $('.toast').on('shown.bs.toast', function () { $("[name=submit]").prop('disabled', true); })
-        setTimeout(function(){
-          $.redirectPost('workPage.php', {id: dati.scavo});
-        },3000);
       }else {
         $(".toast").removeClass('[class^="bg-"]').addClass('bg-danger');
         $("#headerTxt").html('Errore nella query');
