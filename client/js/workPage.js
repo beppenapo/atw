@@ -348,15 +348,29 @@ const getCsv = async function (data, nomeFile) {
   download(csvdata, nomeFile); 
 } 
 
-const csvmaker = function (data) { 
-  csvRows = []; 
-  const headers = Object.keys(data[0]); 
-  csvRows.push(headers.join('|')); 
-  for (const row of data) { 
-    const values = headers.map(e => { return row[e] }) 
-    csvRows.push(values.join('|')) 
-  } 
-  return csvRows.join('\n') 
+// const csvmaker = function (data) { 
+//   csvRows = []; 
+//   const headers = Object.keys(data[0]); 
+//   csvRows.push(headers.join('|')); 
+//   for (const row of data) { 
+//     const values = headers.map(e => { return row[e] }) 
+//     csvRows.push(values.join('|')) 
+//   } 
+//   return csvRows.join('\n') 
+// }
+
+const csvmaker = function (data) {
+  csvRows = [];
+  const headers = Object.keys(data[0]);
+  csvRows.push(headers.map(header => `"${header}"`).join('|'));
+  for (const row of data) {
+    const values = headers.map(header => {
+      const value = row[header];
+      return value === undefined || value === null ? '""' : `"${value}"`;
+    });
+    csvRows.push(values.join('|'));
+  }
+  return csvRows.join('\n');
 }
 
 const download = function (data, nomeFile) { 

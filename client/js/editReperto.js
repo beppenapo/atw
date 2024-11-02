@@ -20,14 +20,14 @@ postData("liste.php", {tab:'tipo'}, function(data){
     let opt = $("<option/>", {value:v.tipologia}).appendTo('#listTipo');
     if(v.id == reperto.us){opt.prop('selected', true);}
   })
-  toggleCheck('tipologia')
+  setTimeout(function(){toggleCheck('tipologia');},500);
 })
 
 postData("liste.php", {tab:'materia'}, function(data){
   data.forEach(function(v,i){
     $("<option/>", {value:v.materiale}).appendTo('#listMateriale');
   })
-  toggleCheck('materiale')
+  setTimeout(function(){toggleCheck('materiale');},500);
 })
 
 postData("liste.php", {tab:'users', orderBy:'cognome asc, nome asc', filter:['classe <= 2']}, function(data){
